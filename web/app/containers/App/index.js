@@ -16,6 +16,8 @@ import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import AppHeader from 'components/AppHeader';
 import Footer from 'components/Footer';
+import {fetchUserIfExists} from "./actions";
+import {connect} from "react-redux";
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -34,24 +36,39 @@ const AppBody = styled.div`
   flex-direction: column;
 `;
 
-export default function App() {
-  return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-      >
-        <meta name="description" content="A React.js Boilerplate application" />
-      </Helmet>
-      <AppHeader />
-      <AppBody>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/features" component={FeaturePage} />
-          <Route path="" component={NotFoundPage} />
-        </Switch>
-      </AppBody>
-      <Footer />
-    </AppWrapper>
-  );
+class App extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(fetchUserIfExists());
+  }
+  render() {
+    return (
+      <AppWrapper>
+        <Helmet
+          titleTemplate="%s - React.js Boilerplate"
+          defaultTitle="React.js Boilerplate"
+        >
+          <meta name="description" content="A React.js Boilerplate application" />
+        </Helmet>
+        <AppHeader />
+        <AppBody>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/features" component={FeaturePage} />
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+        </AppBody>
+        <Footer />
+      </AppWrapper>
+    );
+  }
 }
+
+const mapStateToProps = (state) => {return {};};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

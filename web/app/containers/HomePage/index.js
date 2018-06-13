@@ -53,7 +53,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
   componentWillUpdate(nextProps, nextState) {
     const { sid } = nextProps.currentUser;
-    if (sid !== '') {
+    if (sid !== '' && sid !== this.props.currentUser.sid) {
       // ask for current user order list
       axios.get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
         .then((response) => {

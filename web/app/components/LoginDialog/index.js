@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import {HOST} from "../../constants/conf";
-import {initUser} from "../../containers/App/actions";
+import {fetchUserIfExists} from "../../containers/App/actions";
 import {connect} from "react-redux";
 import {createSelector} from "reselect";
 
@@ -39,12 +39,7 @@ class LoginDialog extends React.Component {
     document.cookie = `csrftoken=${this.state.csrf};`;
     this.setState({ loggedIn: !!this._getCookie('sessionid') });
 
-    // hit profile endpoint, retrieve owner sid
-    axios.get(HOST+"/api/profile/", {
-      withCredentials: true,
-    }).then((response) => {
-      this.props.dispatch(initUser(response.data.sid, response.data.auth_token));
-    });
+    dispatch(fetchUserIfExists());
 
     this.close();
   }

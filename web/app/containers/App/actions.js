@@ -27,18 +27,23 @@ function getCookie(name) {
   if (parts.length == 2) return parts.pop().split(';').shift();
 }
 
-export const initUser = function*() {
-  const sessionId = getCookie('sessionid');
+export const fetchUserIfExists = function() {
 
-  if (!!sessionId) {
-    // hit profile endpoint, retrieve owner sid
-    yield call(() => axios.get(HOST+"/api/profile/", {
-      withCredentials: true,
-    }).then((response) => {
-      this.props.dispatch(initUser(response.data.sid, response.data.auth_token));
-    }));
+    return (dispatch, getState) => {
+      const sessionId = getCookie('sessionid');
 
-  }
+      if (!!sessionId) {
+        // hit profile endpoint, retrieve owner sid
+        axios.get(HOST+"/api/profile/", {
+          withCredentials: true,
+        }).then((response) => {
+          dispatch(initUser(response.data.sid, response.data.auth_token));
+        });
+      }
+    };
+}
+
+export const initUser = function(sid, authToken) {
   return {
     type: INIT_USER,
     sid,
