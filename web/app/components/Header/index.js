@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import A from './A';
+import H1 from './H1';
 import Img from './Img';
 import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
@@ -13,7 +14,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     return (
       <div>
         <A href="https://twitter.com/mxstbr">
-          <Img src={Banner} alt="react-boilerplate - Logo" />
+          <H1>Bodega Web Services</H1>
         </A>
         <NavBar>
           <HeaderLink to="/">

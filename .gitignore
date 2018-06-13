@@ -8,3 +8,5 @@ web/stats.json
 .DS_Store
 web/npm-debug.log
 .idea
+
+.pyc
