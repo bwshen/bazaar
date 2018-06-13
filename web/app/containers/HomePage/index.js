@@ -30,8 +30,41 @@ import reducer from './reducer';
 import saga from './saga';
 import OrderList from "../../components/OrderList";
 import liveOrders from '../../constants/liveOrders';
+import axios from 'axios';
+import {HOST} from '../../constants/conf';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  state = {
+    orderList: []
+  };
+
+  componentWillMount() {
+    const { sid } = this.props.currentUser;
+    if (sid !== '') {
+      // ask for current user order list
+      axios.get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
+        .then((response) => {
+          console.log("LIVE ORDERS", response);
+          this.setState({
+            orderList: response.data.results,
+          });
+        });
+    }
+  }
+  componentWillUpdate(nextProps, nextState) {
+    const { sid } = nextProps.currentUser;
+    if (sid !== '') {
+      // ask for current user order list
+      axios.get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
+        .then((response) => {
+          console.log("LIVE ORDERS", response);
+          this.setState({
+            orderList: response.data.results,
+          });
+        });
+    }
+  }
+
   /**
    * when initial state username is not null, submit the form to load repos
    */
@@ -42,13 +75,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
-      loading,
-      error,
-      repos,
-    };
-
     return (
       <article>
         <Helmet>
@@ -68,7 +94,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <H2>
               <FormattedMessage {...messages.trymeHeader} />
             </H2>
-            <OrderList orderList={liveOrders.results} />
+            <OrderList orderList={this.state.orderList} />
           </Section>
         </div>
       </article>
@@ -101,12 +127,12 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
-});
+const mapStateToProps = function(state) {
+  const currentUser = state.get("global").get("currentUser");
+  return {
+    currentUser
+  };
+}
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

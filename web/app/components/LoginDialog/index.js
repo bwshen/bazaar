@@ -46,7 +46,6 @@ class LoginDialog extends React.Component {
       this.props.dispatch(initUser(response.data.sid, response.data.auth_token));
     });
 
-
     this.close();
   }
 

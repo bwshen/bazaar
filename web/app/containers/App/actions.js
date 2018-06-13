@@ -18,9 +18,27 @@
 import {
   INIT_USER,
 } from './constants';
+import axios from 'axios';
+import {HOST} from "../../constants/conf";
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length == 2) return parts.pop().split(';').shift();
+}
 
-export const initUser = function(sid, authToken) {
+export const initUser = function*() {
+  const sessionId = getCookie('sessionid');
+
+  if (!!sessionId) {
+    // hit profile endpoint, retrieve owner sid
+    yield call(() => axios.get(HOST+"/api/profile/", {
+      withCredentials: true,
+    }).then((response) => {
+      this.props.dispatch(initUser(response.data.sid, response.data.auth_token));
+    }));
+
+  }
   return {
     type: INIT_USER,
     sid,
