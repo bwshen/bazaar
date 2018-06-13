@@ -1,4 +1,4 @@
-export default const liveOrders = {
+const liveOrders = {
   "count": 1,
   "next": null,
   "previous": null,
@@ -55,3 +55,5 @@ export default const liveOrders = {
     }
   ]
 };
+
+export default liveOrders;
