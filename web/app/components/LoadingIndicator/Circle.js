@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
+/* stylelint-disable comment-empty-line-before */
+
 const circleFadeDelay = keyframes`
   0%,
   39%,
@@ -27,7 +29,7 @@ const Circle = (props) => {
       transform: rotate(${props.rotate}deg);
     `}
 
-    &:before {
+    &::before {
       content: '';
       display: block;
       margin: 0 auto;
