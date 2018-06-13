@@ -7,7 +7,7 @@ const http = require('http'),
   finalhandler = require('finalhandler');
 
 const proxyServe = httpProxy.createProxyServer({
-  target: 'https://localhost:3000',
+  target: 'http://localhost:3000',
   secure: false
 });
 
