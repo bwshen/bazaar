@@ -6,8 +6,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
+import {HOST} from "../../constants/conf";
+import {initUser} from "../../containers/App/actions";
+import {connect} from "react-redux";
+import {createSelector} from "reselect";
 
-export default class LoginDialog extends React.Component {
+class LoginDialog extends React.Component {
   state = {
     open: false,
     loggedIn: !!this._getCookie('sessionid'),
@@ -33,6 +38,15 @@ export default class LoginDialog extends React.Component {
     document.cookie = `sessionid=${this.state.sessionId};`;
     document.cookie = `csrftoken=${this.state.csrf};`;
     this.setState({ loggedIn: !!this._getCookie('sessionid') });
+
+    // hit profile endpoint, retrieve owner sid
+    axios.get(HOST+"/api/profile/", {
+      withCredentials: true,
+    }).then((response) => {
+      this.props.dispatch(initUser(response.data.sid, response.data.auth_token));
+    });
+
+
     this.close();
   }
 
@@ -92,3 +106,13 @@ export default class LoginDialog extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {return {};};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog);
