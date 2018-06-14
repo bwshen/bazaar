@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 
 
 const LOCATIONS = ['COLO', 'HQ'];
-const PLATFORMS = ['DYNAPOD', 'DYNAPOD_ROBO', 'DYNAPOD_ROBO_HYPERV', 'PROD_BRIK']
+const PLATFORMS = ['AWSPOD', 'AZUREPOD', 'DYNAPOD', 'DYNAPOD_ROBO', 'DYNAPOD_ROBO_HYPERV', 'PROD_BRIK']
 const FLAGS = [
   'acropolis',
   'benchmarking',

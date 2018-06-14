@@ -29,7 +29,7 @@ class CreateOrderPage extends React.Component {
         "type": "rktest_yml",
       },
     };
-    axios.post(HOST + '/api/orders/', {
+    API.post(HOST + '/api/orders/', {
       items: JSON.stringify(orderParams),
     }, {
       headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
