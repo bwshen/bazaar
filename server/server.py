@@ -9,26 +9,9 @@ app = Flask(__name__)
 def hello():
         return "Hello World!"
 
-@app.route("/rktest_yml_count", methods=['GET'])
-def rktest_yml_machine_count():
-    return jsonify(machine_count.machine_count(request.headers.get('authorization'), '/rktest_ymls'))
-
-@app.route("/ubuntu_machines_count", methods=['GET'])
-def ubuntu_machine_count():
-    return jsonify(machine_count.machine_count(request.headers.get('authorization'), '/ubuntu_machines/'))
-
-@app.route("/esx_hosts_count", methods=['GET'])
-def esx_hosts_count():
-    return jsonify(machine_count.machine_count(request.headers.get('authorization'), '/esx_hosts/'))
-
-@app.route("/sd_dev_machines_count", methods=['GET'])
-def sd_dev_machines_count():
-    return jsonify(machine_count.machine_count(request.headers.get('authorization'), '/sd_dev_machines/'))
-
-@app.route("/mssql_servers_count", methods=['GET'])
-def mssql_servers_count():
-    return jsonify(machine_count.machine_count(request.headers.get('authorization'), '/mssql_servers/'))
-
+@app.route("/machine_count/<machine_type>")
+def count_machine(machine_type):
+    return jsonify(machine_count.machine_count(request.headers.get('authorization'), machine_type))
 
 
 def url():
