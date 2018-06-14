@@ -1,0 +1,112 @@
+2018-06-13T13:37:43+0000 DEBUG <38389.MainThread> [bodega_client] Client was not initialized with both bodega_url and auth_token, will retrieve from .bodega.conf.yml
+2018-06-13T13:37:43+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:43+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/profile/ HTTP/1.1" 200 None
+2018-06-13T13:37:43+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/profile/ with kwargs {'verify': False, 'auth': TokenAuth("***")}
+2018-06-13T13:37:43+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:43+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=1 HTTP/1.1" 301 None
+2018-06-13T13:37:45+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=1 HTTP/1.1" 200 None
+2018-06-13T13:37:45+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=1 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [1]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:45+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:45+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=2 HTTP/1.1" 301 None
+2018-06-13T13:37:46+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=2 HTTP/1.1" 200 None
+2018-06-13T13:37:46+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=2 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [2]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:46+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:46+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=3 HTTP/1.1" 301 None
+2018-06-13T13:37:47+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=3 HTTP/1.1" 200 None
+2018-06-13T13:37:47+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=3 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [3]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:47+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:47+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=4 HTTP/1.1" 301 None
+2018-06-13T13:37:48+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=4 HTTP/1.1" 200 None
+2018-06-13T13:37:48+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=4 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [4]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:48+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:48+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=5 HTTP/1.1" 301 None
+2018-06-13T13:37:49+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=5 HTTP/1.1" 200 None
+2018-06-13T13:37:49+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=5 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [5]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:49+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:49+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=6 HTTP/1.1" 301 None
+2018-06-13T13:37:50+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=6 HTTP/1.1" 200 None
+2018-06-13T13:37:50+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=6 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [6]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:50+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:50+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=7 HTTP/1.1" 301 None
+2018-06-13T13:37:51+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=7 HTTP/1.1" 200 None
+2018-06-13T13:37:51+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=7 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [7]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:51+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:51+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=8 HTTP/1.1" 301 None
+2018-06-13T13:37:52+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=8 HTTP/1.1" 200 None
+2018-06-13T13:37:52+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=8 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [8]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:52+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:52+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=9 HTTP/1.1" 301 None
+2018-06-13T13:37:53+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=9 HTTP/1.1" 200 None
+2018-06-13T13:37:53+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=9 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [9]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:53+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:53+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=10 HTTP/1.1" 301 None
+2018-06-13T13:37:54+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=10 HTTP/1.1" 200 None
+2018-06-13T13:37:54+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=10 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [10]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:54+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:54+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=11 HTTP/1.1" 301 None
+2018-06-13T13:37:55+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=11 HTTP/1.1" 200 None
+2018-06-13T13:37:55+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=11 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [11]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:55+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:55+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=12 HTTP/1.1" 301 None
+2018-06-13T13:37:56+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=12 HTTP/1.1" 200 None
+2018-06-13T13:37:56+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=12 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [12]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:56+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:56+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=13 HTTP/1.1" 301 None
+2018-06-13T13:37:57+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=13 HTTP/1.1" 200 None
+2018-06-13T13:37:57+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=13 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [13]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:57+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:57+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=14 HTTP/1.1" 301 None
+2018-06-13T13:37:58+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=14 HTTP/1.1" 200 None
+2018-06-13T13:37:58+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=14 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [14]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:58+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:58+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=15 HTTP/1.1" 301 None
+2018-06-13T13:37:59+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=15 HTTP/1.1" 200 None
+2018-06-13T13:37:59+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=15 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [15]}, 'auth': TokenAuth("***")}
+2018-06-13T13:37:59+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:37:59+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=16 HTTP/1.1" 301 None
+2018-06-13T13:38:00+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=16 HTTP/1.1" 200 None
+2018-06-13T13:38:00+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=16 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [16]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:00+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:00+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=17 HTTP/1.1" 301 None
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=17 HTTP/1.1" 200 None
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=17 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [17]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:01+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=18 HTTP/1.1" 301 None
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=18 HTTP/1.1" 200 None
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=18 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [18]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:01+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:01+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=19 HTTP/1.1" 301 None
+2018-06-13T13:38:03+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=19 HTTP/1.1" 200 None
+2018-06-13T13:38:03+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=19 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [19]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:03+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:03+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=20 HTTP/1.1" 301 None
+2018-06-13T13:38:04+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=20 HTTP/1.1" 200 None
+2018-06-13T13:38:04+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=20 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [20]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:04+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:04+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=21 HTTP/1.1" 301 None
+2018-06-13T13:38:04+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=21 HTTP/1.1" 200 None
+2018-06-13T13:38:04+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=21 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [21]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:04+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:05+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=22 HTTP/1.1" 301 None
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=22 HTTP/1.1" 200 None
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=22 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [22]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:06+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=23 HTTP/1.1" 301 None
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=23 HTTP/1.1" 200 None
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=23 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [23]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:06+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:06+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=24 HTTP/1.1" 301 None
+2018-06-13T13:38:08+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=24 HTTP/1.1" 200 None
+2018-06-13T13:38:08+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=24 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [24]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:08+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:08+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=25 HTTP/1.1" 301 None
+2018-06-13T13:38:09+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=25 HTTP/1.1" 200 None
+2018-06-13T13:38:09+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=25 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [25]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:09+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:09+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=26 HTTP/1.1" 301 None
+2018-06-13T13:38:10+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=26 HTTP/1.1" 200 None
+2018-06-13T13:38:10+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=26 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [26]}, 'auth': TokenAuth("***")}
+2018-06-13T13:38:10+0000 INFO <38389.MainThread> [requests.packages.urllib3.connectionpool] Starting new HTTPS connection (1): bodega.rubrik-lab.com
+2018-06-13T13:38:10+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders?status=OPEN&page=27 HTTP/1.1" 301 None
+2018-06-13T13:38:11+0000 DEBUG <38389.MainThread> [requests.packages.urllib3.connectionpool] "GET /api/orders/?status=OPEN&page=27 HTTP/1.1" 200 None
+2018-06-13T13:38:11+0000 DEBUG <38389.MainThread> [bodega_client] Make a request to https://bodega.rubrik-lab.com/api/orders/?status=OPEN&page=27 with kwargs {'verify': False, 'params': {'status': ['OPEN'], 'page': [27]}, 'auth': TokenAuth("***")}

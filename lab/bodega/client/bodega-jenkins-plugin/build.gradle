@@ -1,0 +1,89 @@
+plugins {
+  id 'org.jenkins-ci.jpi' version '0.26.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'org.6wind.jenkins'
+version = '1.8-SNAPSHOT'
+
+description = """Lockable Resources plugin"""
+
+jenkinsPlugin {
+    // version of Jenkins core this plugin depends on, must be 1.420 or later
+    coreVersion = '2.60.3'
+
+    // ID of the plugin, defaults to the project name without trailing '-plugin'
+    shortName = 'lockable-resources'
+
+    // human-readable name of plugin
+    displayName = 'Lockable Resources - Integration with Bodega'
+
+
+    // use the plugin class loader before the core class loader, defaults to false
+    pluginFirstClassLoader = true
+
+    // optional list of package prefixes that your plugin doesn't want to see from core
+    // maskClasses = 'groovy.grape org.apache.commons.codec'
+
+    // optional version number from which this plugin release is configuration-compatible
+    // compatibleSinceVersion = '1.1.0'
+
+    // set the directory from which the development server will run, defaults to 'work'
+    // workDir = file('/tmp/jenkins')
+
+
+    // enable injection of additional tests for checking the syntax of Jelly and other things
+    disabledTestInjection = false
+
+    // the output directory for the localizer task relative to the project root, defaults to the value shown
+    localizerOutputDir = "${project.buildDir}/generated-src/localizer"
+
+    // disable configuration of Maven Central, the local Maven cache and the Jenkins Maven repository, defaults to true
+    configureRepositories = true
+
+    // skip configuration of publications and repositories for the Maven Publishing plugin, defaults to true
+    configurePublishing = false
+
+    // plugin file extension, either 'jpi' or 'hpi', defaults to 'hpi'
+    fileExtension = 'hpi'
+
+
+
+}
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+configurations.all {
+}
+
+repositories {
+     maven { url "https://repo.jenkins-ci.org/public/" }
+     maven { url "http://oss.sonatype.org/content/groups/public/" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'envinject', version:'1.92.1'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'git', version:'3.3.0'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'github-api', version:'1.90'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'mailer', version:'1.5'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'matrix-project', version:'1.4'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'phabricator-plugin', version:'1.9.7'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'plain-credentials', version:'1.4'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'nodelabelparameter', version:'1.7.2'
+    jenkinsPlugins group: 'org.jenkins-ci.plugins', name: 'ssh-slaves', version:'1.9'
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version:'2.1.0'
+    compile group: 'com.squareup.retrofit2', name: 'converter-gson', version:'2.1.0'
+    compile group: 'joda-time', name: 'joda-time', version:'2.9.6'
+    compile group: 'org.yaml', name: 'snakeyaml', version:'1.19-SNAPSHOT'
+    compile group: 'com.timgroup', name: 'java-statsd-client', version:'3.0.1'
+    testCompile group: 'org.jenkins-ci.main', name: 'jenkins-war', version:'1.609.3'
+    testCompile group: 'org.jenkins-ci.main', name: 'jenkins-test-harness', version:'1.609.3'
+    compileOnly group: 'org.jenkins-ci.main', name: 'jenkins-core', version:'1.609.3'
+    compileOnly group: 'javax.servlet', name: 'servlet-api', version:'2.4'
+    compileOnly group: 'org.codehaus.mojo', name: 'animal-sniffer-annotations', version:'1.9'
+}

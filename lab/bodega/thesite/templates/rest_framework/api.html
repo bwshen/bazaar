@@ -1,0 +1,43 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}
+Bodega API
+{% endblock %}
+
+{% block branding %}
+<a class='navbar-brand' rel="nofollow" href='{% url "api-root" %}'>
+  Bodega
+  <span class="version">
+    {% comment %}
+    TODO: Would be nice to get the live Bodega version in here. The original
+    Django REST Framework template has {{ version }} but that's the Django
+    REST Framework version, not the Bodega version.
+    {% endcomment %}
+    0.1.x
+  </span>
+</a>
+{% endblock %}
+
+{% block userlinks %}
+{% if user.is_authenticated %}
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      {{ user.get_full_name }}
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href='{% url 'rest_framework:logout' %}?next={{ request.path }}'>
+          Log out
+        </a>
+      </li>
+    </ul>
+  </li>
+{% else %}
+  <li>
+    <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+      Log in with Google
+    </a>
+  </li>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,258 @@
+<!--
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Copyright (c) 2013, 6WIND S.A. All rights reserved.                 *
+ *                                                                     *
+ * This file is part of the Jenkins Lockable Resources Plugin and is   *
+ * published under the MIT license.                                    *
+ *                                                                     *
+ * See the "LICENSE.txt" file for more information.                    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ -->
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+    xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+    xmlns:i="jelly:fmt" xmlns:p="/lib/hudson/project">
+
+    <l:layout title="${it.displayName}">
+        <l:main-panel>
+<j:if test="${it.useBodega}">
+            <h1>Bodega Items</h1>
+</j:if>
+<j:if test="${!it.useBodega}">
+            <h1>${%Lockable Resources}</h1>
+</j:if>
+            <table class="pane" style="width: 90%;" border="thick solid">
+                <tbody>
+                    <tr>
+<j:if test="${it.useBodega}">
+                        <td width="35%" class="pane-header">Item</td>
+                        <td width="15%" class="pane-header">Type</td>
+                        <td width="10%" class="pane-header">Location</td>
+                        <td width="20%" class="pane-header">Status</td>
+</j:if>
+<j:if test="${!it.useBodega}">
+                        <td width="5%" class="pane-header">Resource</td>
+                        <td width="5%" class="pane-header">Type</td>
+                        <td width="5%" class="pane-header">Owner-Team</td>
+                        <td width="5%" class="pane-header">Site-Name</td>
+                        <td width="5%" class="pane-header">Lease-Limit</td>
+                        <td width="5%" class="pane-header">Quarantine</td>
+                        <td width="10%" class="pane-header">Status</td>
+                        <td width="40%" class="pane-header">Labels</td>
+                        <td width="5%" class="pane-header">Actions</td>
+                        <td width="5%" class="pane-header">Lease</td>
+</j:if>
+                    </tr>
+
+<j:forEach var="resource" items="${it.resources}" indexVar="i">
+<script>
+function unlock_resource_${i}() {
+    window.location.assign("unlock?resource=${resource.name}");
+}
+function reserve_resource_${i}() {
+    window.location.assign("reserve?resource=${resource.name}");
+}
+function unreserve_resource_${i}() {
+    window.location.assign("unreserve?resource=${resource.name}");
+}
+function reset_resource_${i}() {
+    window.location.assign("reset?resource=${resource.name}");
+}
+function extend_lease_${i}() {
+    window.location.assign("extendlease?resource=${resource.name}");
+}
+
+
+</script>
+                    <tr>
+                        <td class="pane">
+<j:if test="${it.useBodega}">
+                            <strong><a href="${resource.ownerGroupName}">${resource.name}</a></strong><br/>
+</j:if>
+<j:if test="${!it.useBodega}">
+                            <strong>${resource.name}</strong><br/>
+</j:if>
+                            <em>${resource.description}</em>
+                        </td>
+                        <td class="pane">
+                            <j:whitespace trim="false">
+                                <strong>
+                                    ${resource.gearType}
+                                    <j:if test="${resource.gearType == 'RKTEST_YML'}">
+                                         - ${resource.platform}
+                                    </j:if>
+                                    <br/>
+                                </strong>
+                            </j:whitespace>
+                        </td>
+<j:if test="${!it.useBodega}">
+                        <td class="pane">
+                            <strong>${resource.ownerGroupName}</strong><br/>
+                        </td>
+</j:if>
+                        <td class="pane">
+                            <strong>${resource.siteName}</strong><br/>
+                        </td>
+<j:if test="${!it.useBodega}">
+                        <td class="pane">
+                            <strong>${resource.leaseLimit}</strong><br/>
+                        </td>
+<j:if test="${resource.getQuarantineStatus()}">
+                        <td class="pane" style="color: red;">
+                            <strong>Yes</strong><br/>
+                        </td>
+</j:if>
+<j:if test="${!resource.getQuarantineStatus()}">
+                        <td class="pane">
+                            <strong>No</strong><br/>
+                        </td>
+</j:if>
+</j:if>
+<j:if test="${resource.locked}">
+                        <td class="pane" style="color: red;">
+                            <strong>LOCKED</strong> by
+                            <a href="${rootURL}/${resource.build.url}">
+                                ${resource.build.fullDisplayName}
+                            </a>
+                        </td>
+                        <td class="pane">${resource.labels}</td>
+                        <td class="pane">
+<j:if test="${h.hasPermission(it.UNLOCK)}">
+                            <button onClick="unlock_resource_${i}();">Unlock</button>
+</j:if>
+                        </td>
+                        <td class="pane"> </td>
+</j:if>
+<j:if test="${it.useBodega}">
+    <j:if test="${resource.heldByUrl == null}">
+    <td class="pane" style="color: green;">
+        <strong>FREE</strong>
+    </td>
+    </j:if>
+    <j:if test="${resource.heldByUrl != null}">
+    <td class="pane" style="color: red;">
+        <strong>HELD BY
+            <j:set var="heldByObject"
+                   value="${it.getBodegaObject(resource.heldByUrl)}"/>
+            <j:if test="${heldByObject.order != null}">
+            <j:set var="heldByOrder" value="${heldByObject.order}"/>
+            <a href="${heldByOrder.url}">Order</a>
+            from <a href="${heldByOrder.owner.url}">
+                ${heldByOrder.owner.username}
+            </a>
+            <j:if test="${heldByOrder.purposeUrl != null}">
+            <br/>
+            for <a href="${heldByOrder.purposeUrl}">
+                ${heldByOrder.purposeUrl}
+            </a>
+            </j:if>
+            </j:if>
+            <j:if test="${heldByObject.jenkinsTask != null}">
+            <j:set var="heldByJenkinsTask"
+                   value="${heldByObject.jenkinsTask}"/>
+            <a href="${heldByJenkinsTask.url}">Recovery task</a>
+            <j:if test="${heldByJenkinsTask.cachedBuildUrl != null}">
+            <br/>
+            at <a href="${heldByJenkinsTask.cachedBuildUrl}">
+                ${heldByJenkinsTask.cachedBuildUrl}
+            </a>
+            </j:if>
+            </j:if>
+            <j:if test="${heldByObject.task != null}">
+            <j:set var="heldByTask" value="${heldByObject.task}"/>
+            <a href="${heldByTask.url}">${heldByTask.displayType} task</a>
+            </j:if>
+            <br/>
+            <sub>
+                since <i:formatDate
+                          pattern="yyyy/MM/dd 'at' hh:mm:ss a (z)"
+                          value="${resource.timeHeldByUpdated.toDate()}"/>
+            </sub>
+        </strong>
+    </td>
+    </j:if>
+</j:if>
+<j:if test="${!it.useBodega}">
+    <j:if test="${!resource.locked}">
+        <j:if test="${resource.reservedBy != null}">
+                            <td class="pane" style="color: red;">
+                                <strong>RESERVED</strong> by <strong>${resource.reservedBy}</strong>
+                            </td>
+                            <td class="pane">${resource.labels}</td>
+                            <td class="pane">
+            <j:if test="${h.hasPermission(it.RESERVE)}">
+                <j:if test="${it.UserName == resource.reservedBy or h.hasPermission(app.ADMINISTER)}">
+                    <button onClick="unreserve_resource_${i}();">UnReserve</button>
+                </j:if>
+                <j:if test="${it.UserName == resource.reservedBy or h.hasPermission(app.ADMINISTER)}">
+                    <td class="pane">
+                    <button onClick="extend_lease_${i}();">Extend</button>
+                    </td>
+                </j:if>
+            </j:if>
+                            </td>
+        </j:if>
+        <j:if test="${resource.reservedBy == null}">
+            <j:if test="${resource.queued}">
+                            <td bgcolor="#FFFF00" class="pane" style="color: red;">
+                                QUEUED by "${resource.queueItemProject} ${resource.queueItemId}"
+                            </td>
+                            <td class="pane">${resource.labels}</td>
+                            <td class="pane">
+                <j:if test="${h.hasPermission(it.UNLOCK)}">
+                                <button onClick="reset_resource_${i}();">ResetResource</button>
+                </j:if>
+                            </td>
+            </j:if>
+            <j:if test="${!resource.queued}">
+                            <td class="pane" style="color: green;">
+                                <strong>FREE</strong>
+                            </td>
+                            <td class="pane">${resource.labels}</td>
+                            <td class="pane">
+                <j:if test="${h.hasPermission(it.RESERVE) and it.UserName != null}">
+                                    <button onClick="reserve_resource_${i}();">Reserve</button>
+                </j:if>
+                            </td>
+                            <td class="pane"> </td>
+            </j:if>
+        </j:if>
+    </j:if>
+</j:if>
+                    </tr>
+</j:forEach>
+                </tbody>
+            </table>
+<j:if test="${it.getNumberOfAllLabels() != 0}">
+            <h3>Labels</h3>
+            <table class="pane" style="width: 90%;">
+                <tbody>
+                    <tr>
+                        <td class="pane-header">Label</td>
+                        <td class="pane-header">Free resources</td>
+                    </tr>
+<j:forEach var="label" items="${it.getAllLabels()}">
+                    <tr>
+    <j:choose>
+        <j:when test="${it.getFreeResourceAmount(label) == 0}">
+                        <td class="pane" style="color: red;">${label}</td>
+                        <td class="pane" style="color: red;">0</td>
+        </j:when>
+        <j:when test="${it.getFreeResourceAmount(label) == 1}">
+                        <td class="pane" style="color: darkorange;">${label}</td>
+                        <td class="pane" style="color: darkorange;">1</td>
+        </j:when>
+        <j:otherwise>
+                        <td class="pane" style="color: green;">${label}</td>
+                        <td class="pane" style="color: green;">${it.getFreeResourceAmount(label)}</td>
+        </j:otherwise>
+    </j:choose>
+                    </tr>
+</j:forEach>
+                </tbody>
+            </table>
+</j:if>
+
+        </l:main-panel>
+    </l:layout>
+</j:jelly>

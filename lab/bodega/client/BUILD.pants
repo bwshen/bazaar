@@ -1,0 +1,10 @@
+python_library(name='bodega_client',
+               dependencies=['src/py/utils:thread_util',
+                             'src/py/thirdparty:enum34',
+                             'src/py/thirdparty:requests',
+                             'src/py/thirdparty:pyyaml'],
+               sources=['bodega_client.py',
+                        'token_auth.py'])
+python_tests(name='tests',
+             dependencies=['lab/bodega/client:bodega_client'],
+             sources=globs('*_test.py'))

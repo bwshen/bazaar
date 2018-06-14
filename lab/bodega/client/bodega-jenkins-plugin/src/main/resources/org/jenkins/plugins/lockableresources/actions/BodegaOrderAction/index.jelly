@@ -1,0 +1,70 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+    xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+    xmlns:i="jelly:fmt" xmlns:p="/lib/hudson/project">
+    <l:layout title="${it.displayName}">
+        <j:invokeStatic var="currentThread" className="java.lang.Thread"
+            method="currentThread" />
+        <j:invoke var="buildClass" on="${currentThread.contextClassLoader}"
+            method="loadClass">
+            <j:arg value="hudson.model.AbstractBuild" />
+        </j:invoke>
+        <j:set var="build" value="${request.findAncestorObject(buildClass)}" />
+        <st:include page="sidepanel.jelly" it="${build}" />
+        <l:main-panel>
+        <h1>Bodega Order</h1>
+        <j:set var="order" value="${it.order}"/>
+        <h3>Order <a href="${order.url}">${order.sid}</a></h3>
+        <strong>status</strong>: <em>${order.status}</em>
+        <h4>Items</h4>
+        <ul>
+            <j:forEach var="fulfillment_entry"
+                       items="${order.fulfilledItems}"
+                       indexVar="i">
+            <j:set var="nickname"
+                   value="${fulfillment_entry.key}"/>
+            <j:set var="fulfilled_item"
+                   value="${fulfillment_entry.value}"/>
+            <j:set var="ordered_item"
+                   value="${order.items.get(nickname)}"/>
+            <li>
+                <strong>${nickname}</strong>:
+                <em>
+                    ${ordered_item.type}(${ordered_item.requirements})
+                </em>
+                &#8658;
+                <strong>
+                    <a href="${fulfilled_item.url}">
+                        ${fulfilled_item.name}
+                    </a>
+                </strong>
+            </li>
+            </j:forEach>
+        </ul>
+        <hr/>
+        <h4>Updates</h4>
+        <ul>
+            <j:forEach var="update"
+                       items="${order.updates}"
+                       indexVar="i">
+            <li>
+                <h5>
+                    <a href="${update.url}">
+                        <i:formatDate pattern="yyyy/MM/dd 'at' hh:mm:ss a (z)"
+                                      value="${update.timeCreated.toDate()}"/>
+                    </a>
+                    by
+                    <a href="${update.creatorUrl}">
+                        ${it.getUrlDisplayName(update.creatorUrl)}
+                    </a>
+                </h5>
+                <j:if test="${update.newStatus != null}">
+                <em>status &#8594; ${update.newStatus}</em><br/>
+                </j:if>
+                <span style="white-space:pre-line">${update.comment}</span>
+            </li>
+            </j:forEach>
+        </ul>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>
