@@ -1,0 +1,245 @@
+#!/usr/bin/env python
+
+import argparse
+import fnmatch
+import logging
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SDMAIN_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'scripts'))
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'scripts', 'vsphere'))
+
+from rklab_vcenter_configs import RkLabVCenterConfigs
+from vcenter import ComputeCluster, VCenter
+
+log = logging.getLogger(os.path.basename(__name__))
+logFormatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(logFormatter)
+log.addHandler(consoleHandler)
+log.setLevel(logging.WARN)
+
+# Default vcenter IPs to be queried.
+default_vcenter_ip_filter = (
+    '192.168.60.0',
+    '192.168.60.250',
+    '192.168.60.251')
+
+# Default vcenter labels to be queried.
+default_vcenter_label_filter = ('dev', 'jenkins', 'scale' , 'corpit')
+
+# Default vcenter credentials.
+default_username = 'minion@rubrik-lab.com'
+default_password = 'qwertyu'
+
+
+class NodeLister(object):
+    '''Base tree node object with 'ls' functionality.
+
+    This class wraps a tree node object, adding 'ls'-like functionality.
+    The tree node object being wrapped is required to have a 'name' property.
+    Subclasses are required to override
+      - _node_children()
+      - _CHILD_LISTER_CLASS
+    with the specific implementation details pertaining to the object being
+    wrapped.
+    '''
+
+    def __init__(self, node, patterns, args):
+        '''NodeLister constructor.
+
+        Input:
+          - 'node': The object to which this is a lister.
+          - 'patterns': List of shell-like regex expressions.  'patterns[0]'
+                will be applied to this object's children, 'patterns[1]' to
+                this object's grandchildren, etc.
+          - 'args': Command-line arguments.
+        '''
+
+        self._node = node
+        self.__patterns = patterns
+        self.__args = args
+
+    def name(self):
+        return self._node.name
+
+    def _node_children(self):
+        raise Exception('This method must be overriden by subclasses')
+
+    # Must be overriden by subclasses
+    _CHILD_LISTER_CLASS = None
+
+    def children(self):
+        '''Generator of all child lister objects.'''
+
+        for node_child in self._node_children():
+            yield self._CHILD_LISTER_CLASS(
+                node_child,
+                self.__patterns[1:],
+                self.__args)
+
+    def __process(self, child):
+        '''Return True iff 'child' needs to be processed.'''
+
+        if self.__patterns:
+            return fnmatch.fnmatch(child.name(), self.__patterns[0])
+        return self.__args.recursive
+
+    def list(self):
+        '''Return the 'ls' info for this node and its subtree.'''
+
+        if self.__args.recursive and not self.__patterns:
+            yield (self.name(), )
+        child_found = False
+        if self.__args.recursive or self.__patterns:
+            for child in self.children():
+                child_found = True
+                if self.__process(child):
+                    for list_item in child.list():
+                        yield (str(self.name()), ) + list_item
+        if not self.__patterns and not child_found:
+            yield (self.name(), )
+
+
+class VmLister(NodeLister):
+    '''Lister object for VMs.'''
+
+    def _node_children(self):
+        return []
+
+
+class HostLister(NodeLister):
+    '''Lister object for hosts.'''
+
+    _CHILD_LISTER_CLASS = VmLister
+
+    def _node_children(self):
+        try:
+            for vm in self._node.get_all_vms():
+                yield vm
+        except IndexError:
+            # Unfortunately this happens...
+            log.error('Caught IndexError.  '
+                      'Skipping the rest of node %s.' % self.name())
+
+
+class ComputeClusterLister(NodeLister):
+    '''Lister object for compute clusters.'''
+
+    _CHILD_LISTER_CLASS = HostLister
+
+    def _node_children(self):
+        for host in self._node.get_all_esxhosts():
+            yield host
+
+    def name(self):
+        return str(self._node)
+
+
+class VcenterLister(NodeLister):
+    '''Lister object for vCenters.'''
+
+    _CHILD_LISTER_CLASS = ComputeClusterLister
+
+    def _node_children(self):
+        for cluster in self._node.get_compute_clusters_view():
+            yield self._node.get_compute_cluster(cluster)
+
+
+class LabLister(NodeLister):
+    '''Lister object for the entire lab.'''
+
+    _CHILD_LISTER_CLASS = VcenterLister
+
+    def _node_children(self):
+        for vcenter_host in self._node.get_all_vsphere_hostname():
+            vcenter_config = self._node.get_vcenter_details_by_hostname(
+                vcenter_host)
+            yield VCenter(
+                vcenter_config['hostname'],
+                vcenter_config['username'],
+                vcenter_config['password'],
+                vcenter_port=vcenter_config['port'])
+
+    def name(self):
+        return ''
+
+
+def main(args, pattern=''):
+    if pattern and not pattern.startswith('/'):
+        pattern = '/' + pattern
+    patterns = pattern.split('/')[1:]
+
+    # Determine vcenter_ip_filter
+    vcenter_ip_filter = default_vcenter_ip_filter
+    if args.vcenters:
+        vcenter_ip_filter = args.vcenters
+    elif args.all_vcenters:
+        vcenter_ip_filter = []  # no filter
+
+    # Determine vcenter_label_filter
+    vcenter_label_filter = default_vcenter_label_filter
+    if args.vcenter_labels:
+        vcenter_label_filter = args.vcenter_labels
+    elif args.all_vcenter_labels:
+        vcenter_label_filter = []  # no filter
+
+    lab_lister = LabLister(
+        RkLabVCenterConfigs(
+            filter_by_vcenter_ips=vcenter_ip_filter,
+            filter_by_labels=vcenter_label_filter,
+            username=default_username,
+            password=default_password),
+        patterns,
+        args)
+    for list_item in lab_lister.list():
+        path = '/'.join(list_item)
+        print '%s' % path if path else '/'
+
+
+if __name__ == "__main__":
+    def csv(string):
+        return string.split(',')
+
+    parser = argparse.ArgumentParser(prog=__file__)
+    parser.add_argument('-u', '--username', type=str, required=False,
+                        metavar='minion@rubrik-lab.com',
+                        help='vcenter login id')
+    parser.add_argument('-R', '--recursive', action='store_true',
+                        dest='recursive', default=False,
+                        help="Descend into children")
+
+    vcenter_ip_group = parser.add_mutually_exclusive_group(required=False)
+    vcenter_ip_group.add_argument(
+        '--all_vcenters',
+        required=False,
+        action="store_true",
+        help='Scan all vCenters')
+    vcenter_ip_group.add_argument(
+        '--vcenters',
+        type=csv,
+        required=False,
+        metavar='<vcenter1,vcenter2,vcenter3>',
+        help='Restrict to specified vCenters')
+
+    vcenter_label_group = parser.add_mutually_exclusive_group(required=False)
+    vcenter_label_group.add_argument(
+        '--all_vcenter_labels',
+        required=False,
+        action="store_true",
+        help='Consider vCenters across all labels')
+    vcenter_label_group.add_argument(
+        '--vcenter_labels',
+        type=csv,
+        required=False,
+        metavar='<label1,label2,label3>',
+        help='Restrict to vCenters with specified labels')
+
+    args, other_args = parser.parse_known_args()
+    if len(other_args) > 1:
+        raise Exception('Too many arguments')
+    pattern = other_args[0] if other_args else ''
+    main(args, pattern)

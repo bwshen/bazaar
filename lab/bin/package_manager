@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+"""CLI to interact with repo.corp.rubrik.com."""
+
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SDMAIN_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
+sys.path.append(os.path.join(SDMAIN_ROOT, 'lab', 'package_manager'))
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'scripts', 'dev'))
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'py', 'utils'))
+
+
+if __name__ == '__main__':
+    from packages_cli import main
+    main()

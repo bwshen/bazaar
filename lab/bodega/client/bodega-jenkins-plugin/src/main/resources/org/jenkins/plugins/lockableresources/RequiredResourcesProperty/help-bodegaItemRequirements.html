@@ -1,0 +1,59 @@
+<div>
+  <p>
+    Bodega item requirements JSON/YAML. If specified, this overrides all the
+    other lockable resources settings below. Example:<br/>
+    <code>
+      &nbsp;&nbsp;pod:<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;type: rktest_yml<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;requirements:<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location: COLO<br/>
+    </code>
+  </p>
+
+  <p>
+    If an item named <code>_jenkins_node</code> is included, then it will be
+    used as the Jenkins node for running the job, overriding any node label
+    parameter (<code>SLAVE_LABEL</code>) or assigned node label expression.
+    For example:<br/>
+    <code>
+      &nbsp;&nbsp;_jenkins_node:<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;type: sd_dev_machine<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;requirements:<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location: COLO<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version: 347ae6cf7cd3abce074eb9ce6dc2243f5a1aa528<br/>
+    </code>
+  </p>
+
+  <p>
+    Note that even this mechanism is not the long term goal because values such
+    as the <code>sd_dev_machine</code> version and CDM node version are far
+    more dynamic than the Jenkins job configurations. To really achieve
+    pipeline as code, we would like to discover these values dynamically, just
+    before starting the job, from:
+    <ul>
+      <li>
+        The <code>.sd_dev_bootstrap_hash</code> file for the source tree
+        that's about to be built or Rubrik tarball that's about to be tested.
+      </li>
+      <li>
+        The <code>version_number</code> file from the Rubrik tarball that's
+        about to be tested.
+      </li>
+      <li>
+        Declarations of other required test resources from the test code
+        corresponding to the Rubrik tarball that's about to be tested.
+      </li>
+    </ul>
+  </p>
+
+  <p>
+    If the given item requirements contains the string
+    <code>${ARTIFACTS_URL_TO_USE}</code> and
+    the ARTIFACTS_URL_TO_USE parameter is specified, then
+    ${ARTIFACTS_URL_TO_USE} in the requirements will be dynamically replaced
+    with the value of the parameter.
+
+    Note that this behavior is subject to change if we can think of
+    a cleaner and more intuitive solution.
+  </p>
+</div>

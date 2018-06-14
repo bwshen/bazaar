@@ -1,0 +1,4 @@
+2018-01-30T11:28:10+0000 INFO <37151.MainThread> [issue_tracking.triage_schedule] Loaded rotations from /home/thomas/sdmain/conf/alert_triagers.yml
+2018-01-30T11:28:10+0000 DEBUG <37151.MainThread> [issue_tracking.triage_schedule] Loaded schedule from '/home/thomas/sdmain/conf/alert_triage_schedule.yml'
+2018-01-30T11:44:49+0000 INFO <12221.MainThread> [issue_tracking.triage_schedule] Loaded rotations from /home/thomas/sdmain/conf/alert_triagers.yml
+2018-01-30T11:44:49+0000 DEBUG <12221.MainThread> [issue_tracking.triage_schedule] Loaded schedule from '/home/thomas/sdmain/conf/alert_triage_schedule.yml'

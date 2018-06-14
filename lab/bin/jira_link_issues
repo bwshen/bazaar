@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+import argparse
+import logging
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_NAME = os.path.basename(__file__)
+SDMAIN_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'scripts', 'dev'));
+import logging_utils
+
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'py', 'issue_tracking'));
+from jira_util import JiraUtil
+
+
+def usage():
+    print 'Usage: %s [--linktype link-type] from-issue to-issue' % \
+        SCRIPT_NAME
+    sys.exit(1)
+
+
+if __name__ == '__main__':
+    logging_utils.init_logging()
+
+    parser = argparse.ArgumentParser(prog=__file__)
+    parser.add_argument('--linktype', type=str, required=False,
+                        default='Relates',
+                        metavar='link-type',
+                        help='Link type, e.g. "Relates"')
+    args, issue_ids = parser.parse_known_args()
+    if len(issue_ids) != 2:
+        usage()
+
+    jira = JiraUtil()
+    jira.link_issues(issue_ids[0], args.linktype, issue_ids[1])

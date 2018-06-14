@@ -1,0 +1,32 @@
+py_library(
+    name = "bodega_client",
+    srcs = glob([
+        "client/*.py",
+    ]),
+    imports = [
+        "./client",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/py/utils:ftp_util",
+    ],
+)
+
+py_library(
+    name = "bodega_cli",
+    srcs = glob([
+        "cli/*.py",
+    ]),
+    imports = [
+        "./cli",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        ":bodega_client",
+        "//src/scripts/dev:logging_utils",
+    ],
+)

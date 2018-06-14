@@ -1,0 +1,12 @@
+#!/bin/sh -e
+#
+
+SCRIPT=`readlink -f $0`
+SCRIPT_DIR=`dirname $0`
+SRC_ROOT=`readlink -f "${SCRIPT_DIR}/../.."`
+cd "$SRC_ROOT"
+
+# NOTE(adam): Had to build this with pants b/c it needs jenkinsapi 0.3.4
+./pants -q run lab/phab:revision_history -- --revision $1
+
+cd $OLDPWD

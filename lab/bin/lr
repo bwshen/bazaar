@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import json
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SDMAIN_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
+sys.path.append(os.path.join(SDMAIN_ROOT, 'src', 'scripts', 'jenkins'))
+
+from jenkins_helpers import RkLabJenkins
+
+if __name__ == "__main__":
+    jenkins = RkLabJenkins()
+    resource_dict = jenkins.get_lockable_resources()
+    print json.dumps(resource_dict, indent=4, sort_keys=True)

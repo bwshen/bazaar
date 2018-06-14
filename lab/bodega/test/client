@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+#
+# Runs all the bodega client tests.
+#
+# Deploys a bodega client on localhost and runs the client unit tests from
+# the deployment destination.
+#
+# Requires a running bodega django instance.
+#
+
+import datetime
+import logging
+import os
+import subprocess
+
+log = logging.getLogger(os.path.basename(__name__))
+logFormatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(logFormatter)
+log.addHandler(consoleHandler)
+log.setLevel(logging.INFO)
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_NAME = os.path.splitext(os.path.basename(__file__))[0]
+SDMAIN_ROOT = os.path.join(SCRIPT_DIR, '..', '..', '..')
+
+# Ansible related values.
+ANSIBLE_DIR = os.path.join(SDMAIN_ROOT, 'deployment', 'ansible')
+LOCALHOST_INVENTORY = os.path.join(ANSIBLE_DIR, 'localhost_inventory')
+ANSIBLE_PLAYBOOK = 'ansible-playbook'
+BODEGA_CLIENT_PLAYBOOK = os.path.join(ANSIBLE_DIR, 'bodega_client.yml')
+
+# Ansible bodega_client role parameters.
+LAB_DEST = '/opt/bodega_client_test/lab'
+LAB_SRC = os.path.join(SDMAIN_ROOT, 'lab')
+APPLICATION_NAME = 'bodega_client_test'
+BODEGA_CLIENT_AUTH_TOKEN = 'f1713149d2a04e2b4882d24dddefbbb43a155aad'
+BODEGA_SERVER_HOST = 'bodega-dev.rubrik-lab.com'
+
+# Bodega client tests directory.
+BODEGA_CLIENT_TESTS_DIR = os.path.join(LAB_DEST, 'bodega', 'client', 'tests')
+
+def run_subprocess(argv):
+    log.debug('Running %s' % ' '.join(argv))
+    try:
+        output = subprocess.check_output(argv)
+        log.debug(output)
+    except subprocess.CalledProcessError as e:
+        log.error(
+            'Command failed with status %s. Output:\n%s' %
+            (repr(e.returncode), e.output))
+        raise
+
+def deploy_client():
+    log.info('Deploying the bodega client')
+    extra_vars = [
+        'lab_dest=%s/' % LAB_DEST,
+        'lab_src=%s/' % LAB_SRC,
+        'application_name=%s' % APPLICATION_NAME,
+        'bodega_client_auth_token=%s' % BODEGA_CLIENT_AUTH_TOKEN,
+        'bodega_server_host=%s' % BODEGA_SERVER_HOST,
+    ]
+    argv = [
+        ANSIBLE_PLAYBOOK,
+        '--sudo',
+        '-i', LOCALHOST_INVENTORY,
+        '--extra-vars=%s' % ' '.join(extra_vars),
+        BODEGA_CLIENT_PLAYBOOK
+    ]
+    run_subprocess(argv)
+
+def run_tests():
+    log.info('Changing directory to %s' % BODEGA_CLIENT_TESTS_DIR)
+    os.chdir(BODEGA_CLIENT_TESTS_DIR)
+    log.info('Running bodega client tests')
+    argv = ['py.test', '-s', '-v']
+    run_subprocess(argv)
+
+def main():
+    deploy_client()
+    run_tests()
+
+if __name__ == "__main__":
+    main()
