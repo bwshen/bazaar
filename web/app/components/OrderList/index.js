@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import Tooltip from '@material-ui/core/Tooltip';
 import Link from "react-router-dom/es/Link";
-import axios from 'axios';
+import {API} from 'utils/api';
 import {HOST} from 'constants/conf';
 import { connect } from 'react-redux';
 import Countdown from 'react-cntdwn'
@@ -32,25 +32,19 @@ class OrderList extends React.Component {
 
   extendOrder(order, e) {
     e.preventDefault();
-    axios.post(HOST+"/api/order_updates/", {
+    API.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Extending order using Bazaar',
       time_limit_delta: '1:00:00'
-    }, {
-      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
-      withCredentials: true,
     }).then(this.props.actionCallback);
   }
 
   closeOrder(order, e) {
     e.preventDefault();
-    axios.post(HOST+"/api/order_updates/", {
+    API.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Closing order through Bazaar',
       new_status: 'CLOSED'
-    }, {
-      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
-      withCredentials: true,
     }).then(this.props.actionCallback);
   }
 

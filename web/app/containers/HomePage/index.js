@@ -20,9 +20,8 @@ import { changeUsername } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import OrderList from "../../components/OrderList";
-import axios from 'axios';
+import {API} from 'utils/api';
 import {HOST} from '../../constants/conf';
-import HomeLink from "./HomeLink";
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -47,7 +46,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   updateList(sid) {
-    axios
+    API
       .get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
       .then((response) => {
       this.setState({

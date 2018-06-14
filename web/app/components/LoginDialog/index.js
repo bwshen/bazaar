@@ -13,9 +13,8 @@ import {createSelector} from "reselect";
 class LoginDialog extends React.Component {
   state = {
     open: false,
-    loggedIn: !!this._getCookie('sessionid'),
-    sessionId: '',
-    csrf: '',
+    loggedIn: !!this._getCookie('authtoken'),
+    authtoken: '',
   };
 
   _getCookie(name) {
@@ -25,36 +24,32 @@ class LoginDialog extends React.Component {
   }
 
   open = () => {
-    this.setState({ open: true, sessionId: '', csrf: '' });
+    this.setState({ open: true, authtoken: ''});
   };
 
   close = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, authtoken: '' });
   };
 
   login = () => {
-    document.cookie = `sessionid=${this.state.sessionId};`;
-    document.cookie = `csrftoken=${this.state.csrf};`;
-    this.setState({ loggedIn: !!this._getCookie('sessionid') });
+    document.cookie = `authtoken=${this.state.authtoken};`;
+    this.setState({ loggedIn: !!this._getCookie('authtoken') });
 
     this.props.dispatch(fetchUserIfExists());
 
     this.close();
   }
 
-  setSessionId = (e) => {
-    console.log(e.target.value);
-    this.setState({ sessionId: e.target.value });
+  setBodegaAuthToken = (e) => {
+    this.setState({ authtoken: e.target.value });
   }
 
-  setCSRFToken = (e) => {
-    this.setState({ csrf: e.target.value });
-  }
 
   logout = () => {
     document.cookie = 'sessionid=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'csrftoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    this.setState({ loggedIn: !!this._getCookie('sessionid') });
+    document.cookie = 'authtoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    this.setState({ loggedIn: !!this._getCookie('authtoken') });
   }
 
   render() {
@@ -69,23 +64,15 @@ class LoginDialog extends React.Component {
           <DialogTitle id="form-dialog-title">Login</DialogTitle>
           <DialogContent>
             <DialogContentText>
-        Copy your Tokens from Bodega here:
+        Copy your Token from Bodega here:
       </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
-              id="sessionId"
-              label="Session Id"
+              id="authToken"
+              label="BodegaAuthToken"
               type="text"
-              onChange={this.setSessionId}
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="CSRFToken"
-              label="Optional CSRF Token"
-              type="text"
-              onChange={this.setCSRFToken}
+              onChange={this.setBodegaAuthToken}
               fullWidth
             />
           </DialogContent>

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
 import Section from './Section';
-import axios from 'axios';
+import {API} from 'utils/api';
 import {HOST} from '../../constants/conf';
 import H2 from "../../components/H2";
 import H3 from "../../components/H3";
@@ -16,7 +16,7 @@ class OrderPage extends React.Component {
   };
 
   componentWillMount() {
-    axios.get(HOST + '/api/orders/' + this.props.match.params.orderSid)
+    API.get(HOST + '/api/orders/' + this.props.match.params.orderSid)
       .then((response) => {
         this.setState({
           order: response.data,
