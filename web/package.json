@@ -260,6 +260,7 @@
     "minimist": "1.2.0",
     "prop-types": "15.6.1",
     "react": "16.3.0",
+    "react-cntdwn": "^0.3.0",
     "react-dom": "16.3.0",
     "react-helmet": "5.2.0",
     "react-intl": "2.4.0",

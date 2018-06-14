@@ -25,21 +25,6 @@ const openedStyle = {
   backgroundColor: 'orange',
 }
 
-const calcTimeLeft = function(timeLeft) {
-  const firstPass = timeLeft.split(' ');
-  const days = 1 in firstPass ? parseInt(firstPass[0], 10) : 0;
-  const secondPass = firstPass[1 in firstPass ? 1 : 0].split(':');
-  const hours = 0 in secondPass ? parseInt(secondPass[0], 10) : 0;
-  const mins = 1 in secondPass ? parseInt(secondPass[1], 10) : 0;
-  const secs = 2 in secondPass ? parseInt(secondPass[2], 10) : 0;
-  const miliseconds =
-    days * 24 * 60 * 60 * 1000 +
-    hours * 60 * 60 * 1000 +
-    mins * 60 * 1000 +
-    secs *  1000;
-  console.log(days, hours, mins, secs);
-  return miliseconds;
-}
 
 class OrderList extends React.Component {
 
@@ -90,7 +75,7 @@ class OrderList extends React.Component {
             secondary={`Status: ${order.status}`}
           />
     {order.status === 'FULFILLED' && <div style={{flex: "1 1 auto"}}><Countdown
-      targetDate={new Date(Date.now() + calcTimeLeft(order.time_limit))}
+      targetDate={new Date(order.ejection_time)}
       interval={1000}
       format={{
         day: 'dd',

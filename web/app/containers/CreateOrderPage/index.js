@@ -67,19 +67,19 @@ class CreateOrderPage extends React.Component {
           </H2>
           <Section>
             <List>
-              <ListItem onClick={() => { this.createOrder("DYNAPOD"); }}>
+              <ListItem onClick={() => { this.createOrder("DYNAPOD"); }} button={true}>
                 <ListItemIcon>
                   <SettingsSystemDaydreamIcon/>
                 </ListItemIcon>
                 <ListItemText primary={"DYNAPOD"} secondary={"COLO"} />
               </ListItem>
-              <ListItem onClick={() => { this.createOrder("DYNAPOD_ROBO"); }}>
+              <ListItem onClick={() => { this.createOrder("DYNAPOD_ROBO"); }} button={true}>
                 <ListItemIcon>
                   <SettingsSystemDaydreamIcon/>
                 </ListItemIcon>
                 <ListItemText primary={"DYNAPOD_ROBO"} secondary={"COLO"} />
               </ListItem>
-              <ListItem onClick={() => { this.createOrder("PROD_BRIK"); }}>
+              <ListItem onClick={() => { this.createOrder("PROD_BRIK"); }} button={true}>
                 <ListItemIcon>
                   <SettingsSystemDaydreamIcon/>
                 </ListItemIcon>
