@@ -9,7 +9,6 @@ function Footer() {
   return (
     <Wrapper>
       <section>
-        <FormattedMessage {...messages.licenseMessage} />
       </section>
       <section>
         <FormattedMessage

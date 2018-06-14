@@ -28,6 +28,18 @@ const openedStyle = {
   backgroundColor: 'orange',
 }
 
+function getRequirements(order) {
+  for (let item in order.items_json) {
+    if (order.items_json[item]) {
+      const resp = [], reqs = order.items_json[item].requirements;
+      for (let key in reqs){
+        resp.push(`${key}: ${reqs[key]}`);
+      }
+      return resp.join("\n");
+    }
+    return "";
+  }
+}
 
 class OrderList extends React.Component {
 
@@ -56,17 +68,20 @@ class OrderList extends React.Component {
   }
 
   orderToListItem(order) {
+
     const avatarStyle = order.status === 'FULFILLED' ? fullfilledStyle: order.status === 'OPEN' ? openedStyle: {};
     const timeLeft = order.time_limit
     return (
       <Link to={"/order/" + order.sid} key={order.sid} style={{ textDecoration: 'none' }}>
         <ListItem button={true}>
-          <ListItemAvatar>
-            <Avatar style={avatarStyle} >
-             {order.status === 'FULFILLED' &&  <AssignmentTurnedInIcon/>}
-              {order.status === 'OPEN' &&  <WatchLaterIcon/>}
-            </Avatar>
-          </ListItemAvatar>
+          <Tooltip title={getRequirements(order)} PopperProps={{style: {whiteSpace: 'pre-line'}}}>
+            <ListItemAvatar>
+              <Avatar style={avatarStyle} >
+               {order.status === 'FULFILLED' &&  <AssignmentTurnedInIcon/>}
+                {order.status === 'OPEN' &&  <WatchLaterIcon/>}
+              </Avatar>
+            </ListItemAvatar>
+          </Tooltip>
           <ListItemText
             primary={order.sid}
             secondary={`Status: ${order.status}`}
