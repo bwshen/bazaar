@@ -3,6 +3,8 @@ import machine_count
 from flask import Flask
 from flask import request
 from flask import jsonify
+import sys
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -23,3 +25,14 @@ def url():
         raise Exception("Cannot find server config file")
 
     return url
+
+sys.path.append('../lab/bin')  # noqa
+from bodega_order import get_order_times
+
+@app.route("/order_times/<sid>")
+def get_list_orders(sid):
+  (order_time, target_time) = get_order_times(sid)
+  return "{'order_time':"+str(order_time)+",'target_time':"+str(target_time)+"}"
+
+
+  
