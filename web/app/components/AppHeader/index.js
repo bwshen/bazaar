@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import LoginDialog from 'components/LoginDialog';
 import axios from 'axios';
+import Link from "react-router-dom/es/Link";
 
 const styles = {
   root: {
@@ -74,7 +75,9 @@ class ButtonAppBar extends React.Component {
               color="inherit"
               className={classes.flex}
             >
-      Bodega - Where's My Pod?
+      <Link to={"/"}>
+        Bodega - Where's My Pod?
+      </Link>
       </Typography>
             <Button color="inherit" onClick={this.getApiOrder}>getApiOrder</Button>
             <LoginDialog />
