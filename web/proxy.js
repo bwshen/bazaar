@@ -11,6 +11,14 @@ const proxyServe = httpProxy.createProxyServer({
   secure: false
 });
 
+const backendProxy = httpProxy.createProxyServer({
+	target: 'http://localhost:5000',
+	secure: false
+});
+backendProxy.on('proxyReq', function(proxyReq, req, res, options) {
+	proxyReq.setHeader('host', 'localhost:5000');
+});
+
 const bodegaProxy = httpProxy.createProxyServer({
   target: 'https://bodega.rubrik-lab.com',
   secure: false
@@ -23,7 +31,11 @@ bodegaProxy.on('proxyReq', function(proxyReq, req, res, options) {
 const server = http.createServer(function(req, res) {
   if (req.url.includes('/api')) {
     bodegaProxy.web(req, res);
-  } else {
+  } 
+	else if (req.url.includes('order_times')) {
+		backendProxy.web(req, res);
+	}
+	else {
     proxyServe.web(req, res);
   }
 });
