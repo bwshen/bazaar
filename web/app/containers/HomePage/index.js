@@ -39,39 +39,26 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   };
 
   componentWillMount() {
-    const { sid } = this.props.currentUser;
-    if (sid !== '') {
-      // ask for current user order list
-      axios.get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
-        .then((response) => {
-          console.log("LIVE ORDERS", response);
-          this.setState({
-            orderList: response.data.results,
-          });
-        });
-    }
+    this.updateList();
   }
   componentWillUpdate(nextProps, nextState) {
-    const { sid } = nextProps.currentUser;
-    if (sid !== '' && sid !== this.props.currentUser.sid) {
+    const { sid } = this.props.currentUser;
+    if (sid !== this.props.currentUser.sid) {
       // ask for current user order list
-      axios.get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
-        .then((response) => {
-          console.log("LIVE ORDERS", response);
-          this.setState({
-            orderList: response.data.results,
-          });
-        });
+      this.updateList();
     }
   }
 
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
-    }
+  updateList() {
+    const { sid } = this.props.currentUser;
+    if (sid === '') return;
+    axios
+      .get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
+      .then((response) => {
+        this.setState({
+          orderList: response.data.results,
+        });
+      });
   }
 
   render() {
@@ -83,7 +70,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </Helmet>
         <div>
           <Section>
-            <OrderList orderList={this.state.orderList} />
+            <OrderList orderList={this.state.orderList} actionCallback={this.updateList.bind(this)} />
           </Section>
         </div>
       </article>
@@ -97,23 +84,10 @@ HomePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
-  repos: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.bool,
-  ]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
-  return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onSubmitForm: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
-    },
-  };
+  return {};
 }
 
 const mapStateToProps = function(state) {

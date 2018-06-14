@@ -6,6 +6,8 @@ const Section = styled.section`
   &:first-child {
     margin-top: 0;
   }
+  
+  min-width: 500px;
 `;
 
 export default Section;

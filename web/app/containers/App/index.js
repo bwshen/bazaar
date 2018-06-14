@@ -29,9 +29,9 @@ const AppWrapper = styled.div`
 `;
 
 const AppBody = styled.div`
-  max-width: calc(768px + 16px * 2);
   margin: 0 auto;
   display: flex;
+  flex: 1;
   min-height: 100%;
   padding: 0 16px;
   flex-direction: column;
