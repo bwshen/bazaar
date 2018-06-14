@@ -18,7 +18,8 @@ import AppHeader from 'components/AppHeader';
 import Footer from 'components/Footer';
 import {fetchUserIfExists} from "./actions";
 import {connect} from "react-redux";
-import {OrderPage} from "../OrderPage";
+import OrderPage from "../OrderPage";
+import CreateOrderPage from "../CreateOrderPage";
 
 const AppWrapper = styled.div`
   margin: 0 auto;
@@ -55,11 +56,10 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/order/:orderSid" component={OrderPage} />
-            <Route path="/features" component={FeaturePage} />
+            <Route path="/create" component={CreateOrderPage} />
             <Route path="" component={NotFoundPage} />
           </Switch>
         </AppBody>
-        <Footer />
       </AppWrapper>
     );
   }
