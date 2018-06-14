@@ -4,10 +4,11 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
 import Section from './Section';
-import axios from 'axios';
+import {API} from 'utils/api';
 import {HOST} from '../../constants/conf';
 import H2 from "../../components/H2";
 import H3 from "../../components/H3";
+import OrderProgess from 'components/OrderProgress';
 
 class OrderPage extends React.Component {
   state = {
@@ -15,7 +16,7 @@ class OrderPage extends React.Component {
   };
 
   componentWillMount() {
-    axios.get(HOST + '/api/orders/' + this.props.match.params.orderSid)
+    API.get(HOST + '/api/orders/' + this.props.match.params.orderSid)
       .then((response) => {
         this.setState({
           order: response.data,
@@ -25,6 +26,13 @@ class OrderPage extends React.Component {
 
   render() {
     if (this.state.order) {
+      let thething;
+      for (let item in this.state.order.items_json) {
+        if (this.state.order.items_json[item]) {
+          thething = this.state.order.items_json[item];
+          break;
+        }
+      }
       return (
         <article>
           <Helmet>
@@ -42,8 +50,9 @@ class OrderPage extends React.Component {
               Time created: {this.state.order.time_created}
             </H3>
             <Section>
-              {`Item platform is ${this.state.order.items_json._item_1.requirements.platform} at location ${this.state.order.items_json._item_1.requirements.location}`}
+              {`Item platform is ${thething.requirements.platform} at location ${thething.requirements.location}`}
             </Section>
+            {this.state.order.status === 'OPEN' && <OrderProgess />}
           </div>
         </article>
       );

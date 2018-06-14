@@ -47,9 +47,9 @@ class ButtonAppBar extends React.Component {
               color="inherit"
               className={classes.flex}
             >
-      <Link to={"/"}>
+      <Button size="large" disableRipple={true} disableFocusRipple={true} variant="text" color="inherit" component={({...props}) => <Link to='/' {...props} />}>
         Bodega Web Services
-      </Link>
+      </Button>
       </Typography>
             {this.props.location.pathname !== '/create' && <Button variant="outlined" color="inherit" component={({...props}) => <Link to='/create' {...props} />}>Create an Order</Button>}
             <LoginDialog />

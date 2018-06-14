@@ -11,10 +11,14 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import Tooltip from '@material-ui/core/Tooltip';
 import Link from "react-router-dom/es/Link";
-import axios from 'axios';
+import {API} from 'utils/api';
 import {HOST} from 'constants/conf';
 import { connect } from 'react-redux';
+import Countdown from 'react-cntdwn'
+import H2 from "../H2";
+
 
 const fullfilledStyle = {
   backgroundColor: 'green',
@@ -24,29 +28,36 @@ const openedStyle = {
   backgroundColor: 'orange',
 }
 
+function getRequirements(order) {
+  for (let item in order.items_json) {
+    if (order.items_json[item]) {
+      const resp = [], reqs = order.items_json[item].requirements;
+      for (let key in reqs){
+        resp.push(`${key}: ${reqs[key]}`);
+      }
+      return resp.join("\n");
+    }
+    return "";
+  }
+}
+
 class OrderList extends React.Component {
 
   extendOrder(order, e) {
     e.preventDefault();
-    axios.post(HOST+"/api/order_updates/", {
+    API.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Extending order using Bazaar',
       time_limit_delta: '1:00:00'
-    }, {
-      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
-      withCredentials: true,
     }).then(this.props.actionCallback);
   }
 
   closeOrder(order, e) {
     e.preventDefault();
-    axios.post(HOST+"/api/order_updates/", {
+    API.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Closing order through Bazaar',
       new_status: 'CLOSED'
-    }, {
-      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
-      withCredentials: true,
     }).then(this.props.actionCallback);
   }
 
@@ -57,27 +68,50 @@ class OrderList extends React.Component {
   }
 
   orderToListItem(order) {
+
     const avatarStyle = order.status === 'FULFILLED' ? fullfilledStyle: order.status === 'OPEN' ? openedStyle: {};
+    const timeLeft = order.time_limit
     return (
-      <Link to={"/order/" + order.sid} key={order.sid}>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar style={avatarStyle} >
-             {order.status === 'FULFILLED' &&  <AssignmentTurnedInIcon/>}
-              {order.status === 'OPEN' &&  <WatchLaterIcon/>}
-            </Avatar>
-          </ListItemAvatar>
+      <Link to={"/order/" + order.sid} key={order.sid} style={{ textDecoration: 'none' }}>
+        <ListItem button={true}>
+          <Tooltip title={getRequirements(order)} PopperProps={{style: {whiteSpace: 'pre-line'}}}>
+            <ListItemAvatar>
+              <Avatar style={avatarStyle} >
+               {order.status === 'FULFILLED' &&  <AssignmentTurnedInIcon/>}
+                {order.status === 'OPEN' &&  <WatchLaterIcon/>}
+              </Avatar>
+            </ListItemAvatar>
+          </Tooltip>
           <ListItemText
             primary={order.sid}
             secondary={`Status: ${order.status}`}
           />
+    {order.status === 'FULFILLED' && <div style={{flex: "1 1 auto"}}><Countdown
+      targetDate={new Date(order.ejection_time)}
+      interval={1000}
+      format={{
+        day: 'dd',
+        hour: 'hh',
+        minute: 'mm',
+        second: 'ss'
+    }}
+      timeSeparator={':'}
+      leadingZero
+      /></div>}
           <ListItemSecondaryAction>
-            {order.status === 'FULFILLED' && <IconButton aria-label="Extend" onClick={this.extendOrder.bind(this, order)}>
-            <RestoreIcon />
-            </IconButton>}
-            <IconButton aria-label="Delete" onClick={this.closeOrder.bind(this, order)}>
-              <DeleteIcon />
-            </IconButton>
+            {
+              order.status === 'FULFILLED' &&
+              <Tooltip title={"Extend"}>
+                <IconButton aria-label="Extend" onClick={this.extendOrder.bind(this, order)}>
+                  <RestoreIcon />
+                </IconButton>
+              </Tooltip>
+            }
+            <Tooltip title={"Delete"}>
+              <IconButton aria-label="Delete" onClick={this.closeOrder.bind(this, order)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </ListItemSecondaryAction>
         </ListItem>
       </Link>
@@ -86,9 +120,14 @@ class OrderList extends React.Component {
 
   render() {
     return (
-      <List>
-        {this.props.orderList.map(this.orderToListItem.bind(this))}
-      </List>
+      <div>
+        <H2>
+          All Orders
+        </H2>
+        <List>
+          {this.props.orderList.map(this.orderToListItem.bind(this))}
+        </List>
+      </div>
     );
   }
 }

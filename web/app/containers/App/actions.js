@@ -18,7 +18,7 @@
 import {
   INIT_USER,
 } from './constants';
-import axios from 'axios';
+import {API} from '../../utils/api.js';
 import {HOST} from "../../constants/conf";
 
 function getCookie(name) {
@@ -30,15 +30,12 @@ function getCookie(name) {
 export const fetchUserIfExists = function() {
 
     return (dispatch, getState) => {
-      const sessionId = getCookie('sessionid');
-      if (!!sessionId) {
-        // hit profile endpoint, retrieve owner sid
-        axios.get(HOST+"/api/profile/", {
-          withCredentials: true,
-        }).then((response) => {
+      try {
+        API.get(HOST+"/api/profile/").then((response) => {
+          console.log(response);
           dispatch(initUser(response.data.sid, response.data.auth_token));
-        });
-      }
+      });
+      } catch (e) {if (e.message != 'missing authToken') throw e;}
     };
 }
 
