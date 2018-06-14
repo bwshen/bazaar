@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import Countdown from 'react-cntdwn'
 import H2 from "../H2";
 
+
 const fullfilledStyle = {
   backgroundColor: 'green',
 }

@@ -54,7 +54,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/order/:orderSid" component={OrderPage} />
-            <Route path="/create" component={CreateOrderPage} />
+            <Route path="/create" render={props => <CreateOrderPage history={this.props.history} />} />
             <Route path="" component={NotFoundPage} />
           </Switch>
         </AppBody>

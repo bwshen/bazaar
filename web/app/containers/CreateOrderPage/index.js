@@ -9,10 +9,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Divider from '@material-ui/core/Divider';
+
 import H2 from "../../components/H2";
 
 import axios from 'axios';
 import {HOST} from '../../constants/conf';
+import CustomOrderForm from "./CustomOrderForm";
 
 class CreateOrderPage extends React.Component {
   createOrder(platform) {
@@ -21,7 +24,7 @@ class CreateOrderPage extends React.Component {
         "requirements": {
           "location": "COLO",
           "network": "native",
-          "platform": "DYNAPOD",
+          "platform": platform,
         },
         "type": "rktest_yml",
       },
@@ -31,7 +34,30 @@ class CreateOrderPage extends React.Component {
     }, {
       headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
     }).then((response) => {
-        console.log(response);
+      console.log(response);
+      this.props.history.push("/order/" + response.data.sid);
+    }).catch((err) => {
+      console.error("Failed to place order", err);
+    });
+  }
+  createCustomOrder(formState) {
+    const orderParams = {
+      "_item_1": {
+        "requirements": {
+          "location": formState.location,
+          "network": "native",
+          "platform": formState.platform,
+        },
+        "type": "rktest_yml",
+      },
+    };
+    axios.post(HOST + '/api/orders/', {
+      items: JSON.stringify(orderParams),
+    }, {
+      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
+    }).then((response) => {
+      console.log(response);
+      this.props.history.push("/order/" + response.data.sid);
     }).catch((err) => {
       console.error("Failed to place order", err);
     });
@@ -88,6 +114,13 @@ class CreateOrderPage extends React.Component {
             </List>
           </Section>
         </div>
+        <Divider />
+        <Section>
+          <H2>
+            Or place a custom order:
+          </H2>
+          <CustomOrderForm onSubmit={this.createCustomOrder.bind(this)}/>
+        </Section>
       </article>
     );
   }
@@ -97,6 +130,7 @@ CreateOrderPage.propTypes = {
   orderSid: PropTypes.string,
   currentUser: PropTypes.object,
   match: PropTypes.object,
+  history: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
