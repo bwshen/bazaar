@@ -2161,6 +2161,10 @@ cloneable-readable@^1.0.0:
     process-nextick-args "^1.0.6"
     through2 "^2.0.1"
 
+cloner@^0.4.0:
+  version "0.4.0"
+  resolved "https://repo.corp.rubrik.com/nexus/repository/npm/cloner/-/cloner-0.4.0.tgz#364a86ba7995d4664efc9ccad27ea40b3fa652d2"
+
 co@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/co/-/co-3.1.0.tgz#4ea54ea5a08938153185e15210c68d9092bc1b78"
