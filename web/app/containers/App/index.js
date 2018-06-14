@@ -60,7 +60,6 @@ class App extends React.Component {
             <Route path="" component={NotFoundPage} />
           </Switch>
         </AppBody>
-        <Footer />
       </AppWrapper>
     );
   }
