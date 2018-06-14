@@ -15,7 +15,7 @@ export class OrderPage extends React.Component {
         </Helmet>
         <div>
           <Section>
-            {`This is order ${this.props.orderSid}!!!!`}
+            {`This is order ${this.props.match.params.orderSid}!!!!`}
           </Section>
         </div>
       </article>
@@ -26,6 +26,7 @@ export class OrderPage extends React.Component {
 OrderPage.propTypes = {
   orderSid: PropTypes.string,
   currentUser: PropTypes.object,
+  match: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {

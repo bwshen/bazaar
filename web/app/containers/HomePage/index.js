@@ -121,7 +121,7 @@ const mapStateToProps = function(state) {
   return {
     currentUser
   };
-}
+};
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 

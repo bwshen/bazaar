@@ -76,7 +76,7 @@ class ButtonAppBar extends React.Component {
               className={classes.flex}
             >
       <Link to={"/"}>
-        Bodega - Where's My Pod?
+        Bodega Web Services
       </Link>
       </Typography>
             <Button color="inherit" onClick={this.getApiOrder}>getApiOrder</Button>
