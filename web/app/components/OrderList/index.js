@@ -11,11 +11,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import Tooltip from '@material-ui/core/Tooltip';
 import Link from "react-router-dom/es/Link";
 import axios from 'axios';
 import {HOST} from 'constants/conf';
 import { connect } from 'react-redux';
 import Countdown from 'react-cntdwn'
+import H2 from "../H2";
 
 const fullfilledStyle = {
   backgroundColor: 'green',
@@ -63,7 +65,7 @@ class OrderList extends React.Component {
     const timeLeft = order.time_limit
     return (
       <Link to={"/order/" + order.sid} key={order.sid} style={{ textDecoration: 'none' }}>
-        <ListItem>
+        <ListItem button={true}>
           <ListItemAvatar>
             <Avatar style={avatarStyle} >
              {order.status === 'FULFILLED' &&  <AssignmentTurnedInIcon/>}
@@ -87,12 +89,19 @@ class OrderList extends React.Component {
       leadingZero
       /></div>}
           <ListItemSecondaryAction>
-            {order.status === 'FULFILLED' && <IconButton aria-label="Extend" onClick={this.extendOrder.bind(this, order)}>
-            <RestoreIcon />
-            </IconButton>}
-            <IconButton aria-label="Delete" onClick={this.closeOrder.bind(this, order)}>
-              <DeleteIcon />
-            </IconButton>
+            {
+              order.status === 'FULFILLED' &&
+              <Tooltip title={"Extend"}>
+                <IconButton aria-label="Extend" onClick={this.extendOrder.bind(this, order)}>
+                  <RestoreIcon />
+                </IconButton>
+              </Tooltip>
+            }
+            <Tooltip title={"Delete"}>
+              <IconButton aria-label="Delete" onClick={this.closeOrder.bind(this, order)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </ListItemSecondaryAction>
         </ListItem>
       </Link>
@@ -101,9 +110,14 @@ class OrderList extends React.Component {
 
   render() {
     return (
-      <List>
-        {this.props.orderList.map(this.orderToListItem.bind(this))}
-      </List>
+      <div>
+        <H2>
+          All Orders
+        </H2>
+        <List>
+          {this.props.orderList.map(this.orderToListItem.bind(this))}
+        </List>
+      </div>
     );
   }
 }
