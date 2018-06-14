@@ -605,3 +605,129 @@ def get_order_times(sid):
     target_finish_time = 0
 
   return (order_time_d, target_finish_time)
+
+
+def get_monthly_cost(user_sid):
+    bodega_client = BodegaClient()
+    page = 1
+    order_status='CLOSED'
+
+    page = 1
+    if (DEBUG):
+      print ('starting page:'+str(page))
+
+    next='temp'
+    item_count = 0
+    sno = 0
+
+    cumulative_time = 0    
+    mdays = datetime.now().day 
+    a1stmday = (datetime.now() - timedelta(days=mdays-1))
+    a2ndmday = a1stmday - timedelta(days=30)
+    a3rdmday = a2ndmday - timedelta(days=30)
+
+    order_time_filter = datetime.now() - timedelta(days=mdays) - timedelta(days=90) 
+    cost0=0
+    cost1=0
+    cost2=0
+    cost3=0
+
+
+    while (next):
+      tried = 0
+      try:
+        order_page  = bodega_client.get('/orders',
+                                        params={'page' : [page],
+                                                'status' : [order_status],
+                                                'time_created__gt': [order_time_filter],
+                                                'owner_sid':[user_sid]
+                                            })
+      except:
+        print "Retrying fetch..."
+        order_page  = bodega_client.get('/orders', 
+                                        params={'page' : [page], 
+                                                'status' : [order_status],
+                                                'time_created__gt': [order_time_filter],
+                                                'owner_sid':[user_sid]
+                                            })
+
+      count = order_page['count']
+      results = order_page['results']
+
+      # Looping through orders of each page
+      for item in results:
+        fulfilled = item['fulfilled_items']
+        sid = item['sid']
+
+        url = item['url']
+        owner = item['owner']
+        order_time = item['time_created'].replace('T',' ').split('.')[0].replace('Z','')
+
+        eject = str(item['ejection_time'])
+        if (eject != 'None'):
+          ejection_time = eject.replace('T',' ').split('.')[0].replace('Z','')
+          hours_consumed = (datetime.strptime(ejection_time,"%Y-%m-%d %H:%M:%S") - datetime.strptime(order_time,"%Y-%m-%d %H:%M:%S")).seconds / 3600
+        else:
+          hours_consumed = 0
+
+        tab_priority = item['tab_based_priority']
+        order_time_d =  datetime.strptime(order_time,"%Y-%m-%d %H:%M:%S") - timedelta(hours=8)
+
+
+
+        # only include fulfilled orders in the last 1 day
+        order_age = datetime.now() - order_time_d
+        detail_link = url.split('/api')[1]
+
+        specific = bodega_client.get(detail_link)
+        sid = specific['sid']
+        ft = 'unknown'
+        plat = 'unknown'
+        loc = 'unknown'
+        net = 'unknown'
+
+        # Find out platform and location
+        fulfilled = specific['fulfilled_items']
+        if ('pod' in fulfilled):
+          ft = fulfilled['pod']
+          plat = ft['platform']
+          loc = ft['location']
+          net = ft['network']
+          
+        price = specific['total_price']
+
+        if (order_time_d > a1stmday):
+          if (DEBUG):
+            print 'current_month'
+            cost0 += price*hours_consumed
+        elif (order_time_d > a2ndmday):
+          if (DEBUG):
+            print '3rd month'
+          cost1 += price*hours_consumed
+        elif (order_time_d > a3rdmday):
+          if (DEBUG):
+            print '2nd month'
+          cost2 += price*hours_consumed
+        else:
+          if (DEBUG):
+            print '1th month'
+          cost3+=price*hours_consumed
+
+        if (DEBUG):
+          print('id:'+str(sid)+', platform:'+str(plat)+', location:'+loc+', network:'+str(net)+', order time:'+str(order_time_d)+',unit price:'+str(price))
+          print('  - hours consumed:'+str(hours_consumed))
+
+      # End of order loop
+      next = order_page['next']
+      page+=1
+
+    if (DEBUG):
+      print('\n')
+      print('=== total records: '+str(count)+', sampled:'+str(item_count))
+      print cost0
+      print cost1
+      print cost2
+      print cost3
+
+     
+    return (cost0, cost1, cost2, cost3)

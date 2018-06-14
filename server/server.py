@@ -34,5 +34,12 @@ def get_list_orders(sid):
   (order_time, target_time) = get_order_times(sid)
   return "{'order_time':"+str(order_time)+",'target_time':"+str(target_time)+"}"
 
+from bodega_order import get_monthly_cost
+@app.route("/monthly_cost/<user_sid>")
+def monthly_cost(user_sid):
+  (cost0, cost1, cost2, cost3) = get_monthly_cost(user_sid)
+  return "{'cost_1stmonth':"+str(cost0)+",cost_2ndmonth':"+str(cost1)+",'cost_3rdmonth':"+str(cost2)+",'cost_4thmonth':"+str(cost3)+"}"
 
   
+if __name__ == '__main__':
+ app.run(threaded=True)
