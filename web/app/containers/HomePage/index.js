@@ -32,6 +32,7 @@ import OrderList from "../../components/OrderList";
 import liveOrders from '../../constants/liveOrders';
 import axios from 'axios';
 import {HOST} from '../../constants/conf';
+import HomeLink from "./HomeLink";
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -51,6 +52,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         });
     }
   }
+
   componentWillUpdate(nextProps, nextState) {
     const { sid } = nextProps.currentUser;
     if (sid !== '' && sid !== this.props.currentUser.sid) {
@@ -65,15 +67,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     }
   }
 
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
-    }
-  }
-
   render() {
     return (
       <article>
@@ -82,6 +75,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <meta name="description" content="A React.js Boilerplate application homepage" />
         </Helmet>
         <div>
+          <Section>
+            <HomeLink to={"/create"}>
+              Create new order
+            </HomeLink>
+          </Section>
           <Section>
             <OrderList orderList={this.state.orderList} />
           </Section>

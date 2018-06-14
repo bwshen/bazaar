@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Section from './Section';
 
-class OrderPage extends React.Component {
+class CreateOrderPage extends React.Component {
   render() {
     return (
       <article>
@@ -23,7 +23,7 @@ class OrderPage extends React.Component {
   }
 }
 
-OrderPage.propTypes = {
+CreateOrderPage.propTypes = {
   orderSid: PropTypes.string,
   currentUser: PropTypes.object,
   match: PropTypes.object,
@@ -42,4 +42,4 @@ const mapStateToProps = function(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateOrderPage);
