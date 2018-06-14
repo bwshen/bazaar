@@ -10,9 +10,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import {Switch, Route, withRouter} from 'react-router-dom';
-
 import HomePage from 'containers/HomePage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import AppHeader from 'components/AppHeader';
 import Footer from 'components/Footer';
@@ -24,7 +22,7 @@ import CreateOrderPage from "../CreateOrderPage";
 const AppWrapper = styled.div`
   margin: 0 auto;
   display: flex;
-  min-height: 100%;
+  min-height: 100vh;
   padding: 0;
   flex-direction: column;
 `;
@@ -60,6 +58,7 @@ class App extends React.Component {
             <Route path="" component={NotFoundPage} />
           </Switch>
         </AppBody>
+        <Footer />
       </AppWrapper>
     );
   }

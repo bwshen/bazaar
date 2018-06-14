@@ -31,7 +31,6 @@ export const fetchUserIfExists = function() {
 
     return (dispatch, getState) => {
       const sessionId = getCookie('sessionid');
-
       if (!!sessionId) {
         // hit profile endpoint, retrieve owner sid
         axios.get(HOST+"/api/profile/", {

@@ -31,7 +31,7 @@ class OrderList extends React.Component {
     axios.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Extending order using Bazaar',
-      time_limit_delta: '4:00:00'
+      time_limit_delta: '1:00:00'
     }, {
       headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
       withCredentials: true,

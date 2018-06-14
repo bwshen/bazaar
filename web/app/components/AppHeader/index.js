@@ -8,12 +8,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import LoginDialog from 'components/LoginDialog';
-import axios from 'axios';
 import Link from "react-router-dom/es/Link";
+import {withRouter} from 'react-router-dom';
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   flex: {
     flex: 1,
@@ -25,37 +25,9 @@ const styles = {
 };
 
 class ButtonAppBar extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
-
-  getApiOrder = () => {
-    // axios.get('http://localhost:4000/api/orders/v8a3qw-jqg5vda/?format=json', { withCredentials: true });
-    axios.post('http://localhost:4000/api/order_updates/', {
-      time_limit_delta: 7200,
-      order_sid: 'v8a3qw-jqg5vda',
-    }, {
-      headers: { 'X-CSRFTOKEN': this._getCookie('csrftoken') },
-    });
-  }
-
-  _getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-
-      // Does this cookie string begin with the name we want?
-        if (cookie.substring(0, name.length + 1) == (`${name}=`)) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
 
   render() {
     const { classes } = this.props;
@@ -79,7 +51,7 @@ class ButtonAppBar extends React.Component {
         Bodega Web Services
       </Link>
       </Typography>
-            <Link to={"/create"}><Button color="inherit">Create an Order</Button></Link>
+            {this.props.location.pathname !== '/create' && <Button variant="outlined" color="inherit" component={({...props}) => <Link to='/create' {...props} />}>Create an Order</Button>}
             <LoginDialog />
           </Toolbar>
         </AppBar>
@@ -90,6 +62,7 @@ class ButtonAppBar extends React.Component {
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  match: PropTypes.object,
 };
 
-export default withStyles(styles)(ButtonAppBar);
+export default withRouter(withStyles(styles)(ButtonAppBar));

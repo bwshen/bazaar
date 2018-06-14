@@ -30,27 +30,30 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   };
 
   componentWillMount() {
-    this.updateList();
+    this.updateListWithCurrentUser();
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { sid } = this.props.currentUser;
+    const { sid } = nextProps.currentUser;
     if (sid !== this.props.currentUser.sid) {
-      // ask for current user order list
-      this.updateList();
+      this.updateList(sid);
     }
   }
 
-  updateList() {
-    const { sid } = this.props.currentUser;
+  updateListWithCurrentUser() {
+    const { sid}  = this.props.currentUser;
     if (sid === '') return;
+    this.updateList(sid);
+  }
+
+  updateList(sid) {
     axios
       .get(HOST + `/api/orders/?format=json&owner_sid=${sid}&status_live=True`)
       .then((response) => {
-        this.setState({
-          orderList: response.data.results,
-        });
-      });
+      this.setState({
+      orderList: response.data.results,
+    });
+  });
   }
 
   render() {
@@ -58,11 +61,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       <article>
         <Helmet>
           <title>Home Page</title>
-          <meta name="description" content="A React.js Boilerplate application homepage" />
+          <meta name="description" content="" />
         </Helmet>
         <div>
           <Section>
-            <OrderList orderList={this.state.orderList} actionCallback={this.updateList.bind(this)} />
+            <OrderList orderList={this.state.orderList} actionCallback={this.updateListWithCurrentUser.bind(this)} />
           </Section>
         </div>
       </article>
