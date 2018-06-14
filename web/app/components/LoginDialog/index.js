@@ -39,7 +39,7 @@ class LoginDialog extends React.Component {
     document.cookie = `csrftoken=${this.state.csrf};`;
     this.setState({ loggedIn: !!this._getCookie('sessionid') });
 
-    dispatch(fetchUserIfExists());
+    this.props.dispatch(fetchUserIfExists());
 
     this.close();
   }
