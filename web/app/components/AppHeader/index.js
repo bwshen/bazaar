@@ -79,7 +79,7 @@ class ButtonAppBar extends React.Component {
         Bodega Web Services
       </Link>
       </Typography>
-            <Button color="inherit" onClick={this.getApiOrder}>getApiOrder</Button>
+            <Link to={"/create"}><Button color="inherit">Create an Order</Button></Link>
             <LoginDialog />
           </Toolbar>
         </AppBar>
