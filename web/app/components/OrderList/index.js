@@ -15,6 +15,7 @@ import Link from "react-router-dom/es/Link";
 import axios from 'axios';
 import {HOST} from 'constants/conf';
 import { connect } from 'react-redux';
+import Countdown from 'react-cntdwn'
 
 const fullfilledStyle = {
   backgroundColor: 'green',
@@ -22,6 +23,22 @@ const fullfilledStyle = {
 
 const openedStyle = {
   backgroundColor: 'orange',
+}
+
+const calcTimeLeft = function(timeLeft) {
+  const firstPass = timeLeft.split(' ');
+  const days = 1 in firstPass ? parseInt(firstPass[0], 10) : 0;
+  const secondPass = firstPass[1 in firstPass ? 1 : 0].split(':');
+  const hours = 0 in secondPass ? parseInt(secondPass[0], 10) : 0;
+  const mins = 1 in secondPass ? parseInt(secondPass[1], 10) : 0;
+  const secs = 2 in secondPass ? parseInt(secondPass[2], 10) : 0;
+  const miliseconds =
+    days * 24 * 60 * 60 * 1000 +
+    hours * 60 * 60 * 1000 +
+    mins * 60 * 1000 +
+    secs *  1000;
+  console.log(days, hours, mins, secs);
+  return miliseconds;
 }
 
 class OrderList extends React.Component {
@@ -58,8 +75,9 @@ class OrderList extends React.Component {
 
   orderToListItem(order) {
     const avatarStyle = order.status === 'FULFILLED' ? fullfilledStyle: order.status === 'OPEN' ? openedStyle: {};
+    const timeLeft = order.time_limit
     return (
-      <Link to={"/order/" + order.sid} key={order.sid}>
+      <Link to={"/order/" + order.sid} key={order.sid} style={{ textDecoration: 'none' }}>
         <ListItem>
           <ListItemAvatar>
             <Avatar style={avatarStyle} >
@@ -71,6 +89,18 @@ class OrderList extends React.Component {
             primary={order.sid}
             secondary={`Status: ${order.status}`}
           />
+    {order.status === 'FULFILLED' && <div style={{flex: "1 1 auto"}}><Countdown
+      targetDate={new Date(Date.now() + calcTimeLeft(order.time_limit))}
+      interval={1000}
+      format={{
+        day: 'dd',
+        hour: 'hh',
+        minute: 'mm',
+        second: 'ss'
+    }}
+      timeSeparator={':'}
+      leadingZero
+      /></div>}
           <ListItemSecondaryAction>
             {order.status === 'FULFILLED' && <IconButton aria-label="Extend" onClick={this.extendOrder.bind(this, order)}>
             <RestoreIcon />
