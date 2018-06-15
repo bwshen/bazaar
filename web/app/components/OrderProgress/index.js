@@ -57,8 +57,13 @@ class OrderProgress extends React.Component {
 			console.log("TIME");
 			console.log(this.state.time);
 			console.log(this.state.time.toString());
-				
-			line = "Estimated Time: " + new Date(this.state.time);
+
+			if (isNaN(this.state.time)) {
+				line = "Estimated Time: Unavailable";
+			}
+			else {
+				line = "Estimated Time: " + new Date(this.state.time);
+			}
 		}
 
     return (
