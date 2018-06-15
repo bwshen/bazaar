@@ -31,11 +31,6 @@ export class CostChart extends React.Component {
     data: []
   };
 
-  constructor(props) {
-    super();
-    console.log(props);
-  }
-
   render () {
     return (
       <LineChart width={600} height={300} data={this.props.data}
