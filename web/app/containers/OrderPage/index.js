@@ -33,6 +33,7 @@ class OrderPage extends React.Component {
           break;
         }
       }
+
       return (
         <article>
           <Helmet>
@@ -52,7 +53,7 @@ class OrderPage extends React.Component {
             <Section>
               {`Item platform is ${thething.requirements.platform} at location ${thething.requirements.location}`}
             </Section>
-            {this.state.order.status === 'OPEN' && <OrderProgess />}
+            {this.state.order.status === 'OPEN' && <OrderProgess sid={this.state.order.sid}/>}
           </div>
         </article>
       );

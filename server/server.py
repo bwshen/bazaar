@@ -32,7 +32,7 @@ from bodega_order import get_order_times
 @app.route("/order_times/<sid>")
 def get_list_orders(sid):
   (order_time, target_time) = get_order_times(sid)
-  return "{'order_time':"+str(order_time)+",'target_time':"+str(target_time)+"}"
+  return jsonify({'order_time': str(order_time), 'target_time': str(target_time)})
 
 from bodega_order import get_monthly_cost
 @app.route("/monthly_cost/<user_sid>")
