@@ -7,7 +7,7 @@ const Section = styled.section`
     margin-top: 0;
   }
   
-  min-width: 500px;
+  min-width: 400px;
 `;
 
 export default Section;

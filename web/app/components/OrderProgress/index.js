@@ -3,37 +3,27 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import axios from 'axios';
+import {API} from 'utils/api';
+import {HOST} from '../../constants/conf';
+
 const styles = {
   root: {
     flexGrow: 1,
   },
 };
 
-const stuff = [
-  'Consulting AI',
-  'Optimizing combinatorials',
-  'Waiting for a parking space',
-  'Ignoring your order to deal with a customer issue',
-  'Build is broken',
-  'Searching the Attic',
-  'Waiting for the testing pipeline',
-  'Putting out a fire in the server room',
-  'Walking over to Building 3 to use the restroom',
-  'Pipe Broken, cannot find bodega',
-  'Did you really think you would ever get a dynapod?',
-];
-
-function itIsMidnight(progress) {
-  return stuff[Math.min(Math.floor(progress / 10), 10)];
-}
-
 class OrderProgress extends React.Component {
   state = {
-    completed: 0,
+		time: new Date()
   };
 
   componentDidMount() {
-    this.timer = setInterval(this.progress, 500);
+    this.timer = setInterval(this.progress, 10000);
+		axios.get(HOST + '/order_times/' + this.props.sid).then((response) => {
+			console.log(response.data.target_time);
+			this.setState({time: Date.parse(response.data.target_time)})
+		})
   }
 
   componentWillUnmount() {
@@ -43,21 +33,38 @@ class OrderProgress extends React.Component {
   timer = null;
 
   progress = () => {
-    const { completed } = this.state;
-    if (completed === 100) {
-      clearInterval(this.timer);
-    } else {
-      const diff = Math.random() * 2;
-      this.setState({ completed: Math.min(completed + diff, 100) });
-    }
+		console.log("TEST")
+		console.log(this.props.sid)
+		axios.get(HOST + '/order_times/' + this.props.sid).then((response) => {
+			console.log(response.data.target_time);
+			this.setState({time: Date.parse(response.data.target_time)})
+		})
   };
 
   render() {
+		console.log(this.state.time)
     const { classes } = this.props;
+		let timeDiff = this.state.time - new Date();
+		var line = ""
+
+		if (timeDiff < 0) {
+			timeDiff = 10000000;
+			line = "Almost there!\n" + "Estimated Time: " + new Date(this.state.time);
+		}
+		else {
+			timeDiff = 10000000 - timeDiff;
+			if (timeDiff < 0) timeDiff = 0;
+			console.log("TIME");
+			console.log(this.state.time);
+			console.log(this.state.time.toString());
+				
+			line = "Estimated Time: " + new Date(this.state.time);
+		}
+
     return (
       <div>
-      <LinearProgress variant="determinate" value={this.state.completed} style={{height: '30px', borderRadius: '15px'}} />
-      <p>{itIsMidnight(this.state.completed)}</p>
+      <LinearProgress variant="determinate" value={timeDiff/10000} style={{height: '30px', borderRadius: '15px'}} />
+      <p>{line}</p>
       </div>
     );
   }

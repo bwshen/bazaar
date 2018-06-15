@@ -12,11 +12,8 @@ const proxyServe = httpProxy.createProxyServer({
 });
 
 const backendProxy = httpProxy.createProxyServer({
-	target: 'http://localhost:5000',
+	target: 'http://192.168.164.252:5000',
 	secure: false
-});
-backendProxy.on('proxyReq', function(proxyReq, req, res, options) {
-	proxyReq.setHeader('host', 'localhost:5000');
 });
 
 const bodegaProxy = httpProxy.createProxyServer({
@@ -31,8 +28,8 @@ bodegaProxy.on('proxyReq', function(proxyReq, req, res, options) {
 const server = http.createServer(function(req, res) {
   if (req.url.includes('/api')) {
     bodegaProxy.web(req, res);
-  } 
-	else if (req.url.includes('order_times')) {
+  }
+	else if (req.url.includes('/order_times') || req.url.includes('/monthly_cost')) {
 		backendProxy.web(req, res);
 	}
 	else {
