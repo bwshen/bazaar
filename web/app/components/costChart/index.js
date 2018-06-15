@@ -7,9 +7,8 @@ const {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts
 
 class CustomTooltip extends React.Component {
   render() {
-    const { active } = this.props;
-    if (active) {
-      const { payload, label } = this.props;
+    const { active, payload, label } = this.props;
+    if (active && payload) {
       return (
         <div className="custom-tooltip">
           <p className="label"><span style={{fontWeight: 'bold', color: '#8884d8'}}>{`${label}: `}</span><span style={{color: 'green'}}>{`$${parseFloat(payload[0].value).toFixed(2)}`}</span></p>
