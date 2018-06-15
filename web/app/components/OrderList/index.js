@@ -48,7 +48,7 @@ class OrderList extends React.Component {
     API.post(HOST+"/api/order_updates/", {
       order_sid: order.sid,
       comment: 'Extending order using Bazaar',
-      time_limit_delta: '1:00:00'
+      time_limit_delta: '4:00:00'
     }).then(this.props.actionCallback);
   }
 
@@ -86,7 +86,7 @@ class OrderList extends React.Component {
             primary={order.sid}
             secondary={`Status: ${order.status}`}
           />
-    {order.status === 'FULFILLED' && <div style={{flex: "1 1 auto"}}><Countdown
+    {order.status === 'FULFILLED' && <div style={{flex: "1 1 auto", paddingRight: '60px'}}><Countdown
       targetDate={new Date(order.ejection_time)}
       interval={1000}
       format={{
