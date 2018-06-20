@@ -34,6 +34,9 @@ class OrderPage extends React.Component {
         }
       }
 
+      const m = new Date(this.state.order.time_created);
+      const dateString = m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + " " + m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate();
+     
       return (
         <article>
           <Helmet>
@@ -48,7 +51,7 @@ class OrderPage extends React.Component {
               Status: {this.state.order.status}
             </H3>
             <H3>
-              Time created: {this.state.order.time_created}
+              Time created: {dateString}
             </H3>
             <Section>
               {`Item platform is ${thething.requirements.platform} at location ${thething.requirements.location}`}
