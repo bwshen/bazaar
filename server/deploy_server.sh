@@ -1,3 +1,3 @@
 #!/bin/bash
 
-FLASK_APP=server.py flask run -h 10.0.64.155 --port 5000
+FLASK_APP=server.py flask run -h 127.0.0.1 --port 5000

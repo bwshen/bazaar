@@ -56,6 +56,7 @@ class CustomOrderForm extends React.Component {
   state = {
     location: LOCATIONS[0],
     platform: PLATFORMS[0],
+    mssql: false,
     flags: FLAGS.reduce((acc, flag) => { return {...acc, [flag]: false}; }, {}),
   };
 
@@ -109,6 +110,20 @@ class CustomOrderForm extends React.Component {
                   <option value={platform} key={platform}>{platform}</option>
                 );
               })}
+            </Select>
+          </FormControl>
+                    <FormControl className={classes.formControl}>
+            <InputLabel htmlFor={'mssql'}>MSSQL DB</InputLabel>
+            <Select
+              native
+              value={this.state.mssql}
+              onChange={this.handleChange('mssql')}
+              inputProps={{
+                name: 'mssql',
+                id: 'mssql',
+              }}>
+              <option value={'false'} key={'mssql_false'}>No</option>
+              <option value={'true'} key={'mssql_true'}>Yes</option>
             </Select>
           </FormControl>
           <div>

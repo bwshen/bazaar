@@ -41,13 +41,17 @@ class CreateOrderPage extends React.Component {
     });
   }
   createCustomOrder(formState) {
+    const requirements = {
+       "location": formState.location,
+       "network": "native",
+       "platform": formState.platform,
+    }
+    if (formState.mssql) {
+       requirements.mssql = true;
+    }
     const orderParams = {
       "_item_1": {
-        "requirements": {
-          "location": formState.location,
-          "network": "native",
-          "platform": formState.platform,
-        },
+        "requirements": requirements,
         "type": "rktest_yml",
       },
     };

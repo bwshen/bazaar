@@ -12,7 +12,7 @@ const proxyServe = httpProxy.createProxyServer({
 });
 
 const backendProxy = httpProxy.createProxyServer({
-	target: 'http://10.0.64.155:5000',
+	target: 'http://localhost:5000',
 	secure: false
 });
 
