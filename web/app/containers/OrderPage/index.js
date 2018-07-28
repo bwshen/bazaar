@@ -37,6 +37,16 @@ class OrderPage extends React.Component {
       const m = new Date(this.state.order.time_created);
       const dateString = m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + " " + m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate();
      
+      let fulfilledItem;
+      if (this.state.order.status === 'FULFILLED' && this.state.order.fulfilled_items) {
+        for (let item in this.state.order.fulfilled_items) {
+          if (this.state.order.fulfilled_items[item]) {
+            fulfilledItem = this.state.order.fulfilled_items[item];
+            break;
+          }
+        }
+       console.log(fulfilledItem);
+      }
       return (
         <article>
           <Helmet>
@@ -50,6 +60,10 @@ class OrderPage extends React.Component {
             <H3>
               Status: {this.state.order.status}
             </H3>
+            {fulfilledItem && fulfilledItem.platform.startsWith('DYNAPOD') && <H3>
+              <a href={"ftp://files-master.colo.rubrik-lab.com/Dynapod/"+fulfilledItem.filename.replace('.yml','')+"/"+fulfilledItem.filename}>YML File</a>
+            </H3>
+            }
             <H3>
               Time created: {dateString}
             </H3>
